@@ -1,3 +1,14 @@
+#NGS Sequence data
+
+ Jason Stajich
+
+ UC Riverside
+
+ jason.stajich[at]ucr.edu
+
+ twitter:[hyphaltip](http://twitter.com/hyphaltip) [stajichlab](http://twitter.com/stajichlab)
+
+---
 #NGS sequence data
 
 * Quality control
@@ -56,12 +67,6 @@ Colorspace (SOLiD) - CSFASTQ
     64;;9:;>+0*&:*.*1-.5($2$3&$570*$575&$9966$5835'665
 
 ---
-#FASTQ Quality score scale
-
-1. PHRED (33 offset)
-2. 
-
----
 #Quality Scores in [FASTQ files](http://en.wikipedia.org/wiki/FASTQ_format) 
 
 
@@ -91,6 +96,9 @@ Paired-End naming can exist because data are in two file, first read
 in file 1 is paired with first read in file 2, etc. This is how data
 come from the sequence base calling pipeline.  The trailing /1 and /2
 indicate they are the read-pair 1 or 2. 
+
+In this case #CTTGTA indicates the barcode sequence since this was
+part of a multiplexed run.
 
 File: Project1_lane6_1_sequence.txt
 
@@ -129,10 +137,11 @@ It depends on if it is Paired End or Mate-Pair library prepration protocol.
 ---
 #Data QC
 
-* Trimming (FASTX_Toolkit, sickle)
-    * Adapative vs hard cutoff
-* Paired end data
-* Plot quality info: FASTQC
+* Trimming
+    * FASTX_toolkit, sickle
+    * Adapative or hard cutoff
+* Additional considerations for Paired-end data
+* Evaluating quality info with reports
 
 ---
 #FASTX toolkit
@@ -140,12 +149,20 @@ It depends on if it is Paired End or Mate-Pair library prepration protocol.
 * Useful for trimming, converting and filtering FASTQ and FASTA data
 * One gotcha - Illumina quality score changes from 64 to 33 offset
 * Default offset is 64, so to read with offset 33 data you need to use -Q 33 option
+* fastx_quality_trimmer
+* fastx_splitter - to split out barcodes
+* fastq_quality_formatter - reformat quality scores (from 33 to 64 or)
+* fastq_to_fasta - to strip off quality and return a fasta file
+* fastx_collapser - to collapse identical reads. Header includes count of number in the bin
 
 ---
 #FASTX - fastx_quality_trimmer
 
 * Filter so that X% of the reads have quality of at least quality of N 
 * Trim reads by quality from the end so that low quality bases are removed (since that is where errors tend to be)
+* Typically we use Phred of 20 as a cutoff and 70% of the read, but you may want other settings
+* This is adaptive trimming as it starts from end and removes bases
+* Can also require a minimum length read after the trimming is complete
 
 ---
 #FASTX toolkit - fastx_trimmer
@@ -161,7 +178,7 @@ It depends on if it is Paired End or Mate-Pair library prepration protocol.
 
 * When trimming and filtering data that is paired, we want the data to remain paired. 
 * This means when removing one sequence from a paired-file, store the other in a separate file
-* When finished will have new File_1 and File_2 (filtered \& trimmed) and a separate file File_unpaired.
+* When finished will have new File_1 and File_2 (filtered & trimmed) and a separate file File_unpaired.
 * Usually so much data, not a bad thing to have agressive filtering
  
 ---
@@ -177,9 +194,12 @@ It depends on if it is Paired End or Mate-Pair library prepration protocol.
 ---
 #Trimming adaptors - tools
 
-* cutadapt - python script with matching
+* cutadapt - Too to matching with alignment. Can search with multiple
+  adaptors but is pipelining each one so will take 5X as long if you
+  match for 5 adaptors.
+
 * SeqPrep - Preserves paired-end data and also quality filtering along with adaptor matching
- 
+
 ---
 #FASTQC for quality control
 
@@ -187,6 +207,35 @@ It depends on if it is Paired End or Mate-Pair library prepration protocol.
 * Overrepresented Kmers also helpful to examine for bias in sequence
 * Overrepresented sequences can often identify untrimmed primers/adaptors
  
+---
+#FASTQC  - per base quality
+
+![PerBase](images/per_base_quality.png "FASTQC per base quality")
+
+---
+#FASTQC  - per seq quality
+
+![PerSeq](images/per_sequence_quality.png "FASTQC per sequence quality")
+
+---
+#FASTQC  - per seq GC content
+
+![PerGC](images/per_sequence_gc_content.png "FASTQC per sequence GC")
+
+---
+#FASTQC  - Sequence Length
+
+![PerLength](images/sequence_length_distribution.png "FASTQC length distribution")
+
+---
+#FASTQC  - kmer distribution
+
+![kmer](images/kmer_profiles.png "FASTQC kmer distribution")
+
+---
+#FASTQC  - kmer table
+
+![kmer](images/kmer_table.png "FASTQC kmer table")
 
 ---
 #Getting ready to align sequence
@@ -198,47 +247,63 @@ It depends on if it is Paired End or Mate-Pair library prepration protocol.
 #Short read aligners
 
 Strategy requires faster searching than BLAST or FASTA
-approach. Several approaches have been developed from only 
-
+approach. Some approaches have been developed to make this fast enough for Millions of sequences.
 * Burrows-Wheeler Transform is a speed up that is accomplished
 through a transformation of the data. Requires and indexing of the
-search database (typically the genome).
+search database (typically the genome). BWA, Bowtie
+* ? LASTZ
+* ? BFAST
 
 ---
-#Workflow
+#Workflow for variant detection
 
 * Trim
 * Check quality
 * Re-trim if needed
 * Align
 * Possible realign around variants
-* Call variants
+* Call variants - SNPs or Indels
 * Possibly calibrate or optimize with gold standard (possible in some species like Human)
 
 ---
-#Short read Alignment for DNA
+#NGS Alignment for DNA
 
-* Bowtie, BWA, LAST, BFAST
-* Short read alignment
-
+* Short reads (30-200bp) 
+    * Bowtie and BWA - implemented with the BWT algorithm, very easy to setup and run
+    * SSAHA also useful, uses fair amount of memory
+    * BFAST - also good for DNA, supports Bisulfide seq,color-space but more complicated to run
+* Longer reads (e.g. PacBio, 454, Sanger reads)
+    * BWA has a BWA-SW mode using does a Smith-Waterman to place reads. Can tolerate large indels much better than standard BWA algorithm but slower.
+    * LAST for long reads
 
 ---
-#Longer read alignment
+#BWA alignment choices
 
-* BWA has a BWA-SW mode which is for longer (300bp+) reads which does a Smith-Waterman to place reads. Can tolerate large indels much better than standard BWA algorithm
-* LAST for long reads too
+From BWA manual
+
+On 350‐1000bp reads, BWA‐SW is several to tens of times faster than
+    the existing programs. Its accuracy is comparable to SSAHA2, more
+    accurate than BLAT. Like BLAT, BWA‐SW also finds chimera which may
+    pose a challenge to SSAHA2. On 10‐100kbp queries where chimera
+    detection is important, BWA‐SW is over 10X faster than BLAT while
+    being more sensitive.
+
+BWA‐SW can also be used to align ~100bp reads, but it is slower than
+    the short‐read algorithm. Its sensitivity and accuracy is lower
+    than SSAHA2 especially when the sequencing error rate is above
+    2%. This is the trade‐off of the 30X speed up in comparison to
+    SSAHA2’s ‐454 mode.
 
 ---
 #Colorspace alignment
 
 * For SOLiD data, need to either convert sequences into FASTQ or run with colorspace aware aligner
-    * BWA, SHRiMP, BFAST are all tuned for color-space
-* Requires some exploration to get it right
+    * BWA, SHRiMP, BFAST can do color-space alignment
 
 ---
 #Realignment for variant identification
 
-* Typical aligners are optimized for speed
+* Typical aligners are optimized for speed, find best place for the read.
 * For calling SNP and Indel positions, important to have optimal alignment
 * Realignment around variable positions to insure best placement of read alignment
     * Stampy applies this with fast BWA alignment followed by full Smith-Waterman alignment around the variable position
@@ -261,41 +326,42 @@ search database (typically the genome).
     * Generate Variant information, statistics about number of reads mapping
     * Index BAM files and retrieve alignment slices of chromosome regions 
 
-* [Picard](http://picard.sf.net)
-* [BEDTools](http://code.google.com/p/bedtools)
-    * generate coverage data from BAM files with GenomeGraph
-* [BAMTools](https://github.com/pezmaster31/bamtools)
-    
+* [Picard](http://picard.sf.net) - java library for manipulation of SAM/BAM files 
+* [BEDTools](http://code.google.com/p/bedtools) - C tools for interval query in BED,GFF and many other format fiels
+    * Can generate per-base or per-window coverage from BAM files with GenomeGraph
+* [BAMTools](https://github.com/pezmaster31/bamtools) C++ tools for BAM manipulation and statistics
+
 ---
 #Using samtools
 
-    !bash
     $ samtools view -h SRR527547.realign.W303.bam
     samtools view -h SRR527547.realign.W303.bam | more
     @HD	VN:1.0	GO:none	SO:coordinate
     @SQ	SN:chrI	LN:230218	UR:file:/bigdata/jstajich/Teaching/CSHL_2012_NGS/examples/genome/Saccharomyces_cerevisiae.fa	M5:6681ac2f62509cfc220d78751b8dc524
     @SQ	SN:chrII	LN:813184	UR:file:/bigdata/jstajich/Teaching/CSHL_2012_NGS/examples/genome/Saccharomyces_cerevisiae.fa	M5:97a317c689cbdd7e92a5c159acd290d2
 
-   !bash
-   $ samtools view -bS SRR527547.sam > SRR527547.unsrt.bam
-   $ samtools sort SRR527547.unsrt.bam SRR527547
-   # this will produce SRR527547.bam
-   $ samtools index SRR527547.bam
-   $ samtools view -h @SQ	SN:chrV	LN:576874
-   @SQ	SN:chrVI	LN:270161
-   @SQ	SN:chrVII	LN:1090940
-   @SQ	SN:chrVIII	LN:562643
-   @SQ	SN:chrIX	LN:439888
-   @SQ	SN:chrX	LN:745751
-   @SQ	SN:chrXI	LN:666816
-   @SQ	SN:chrXII	LN:1078177
-   @SQ	SN:chrXIII	LN:924431
-   @SQ	SN:chrXIV	LN:784333
-   @SQ	SN:chrXV	LN:1091291
-   @SQ	SN:chrXVI	LN:948066
-   @SQ	SN:chrMito	LN:85779
-   @PG	ID:bwa	PN:bwa	VN:0.6.2-r131
-SRR527547.1387762	163	chrI	1	17	3S25M1D11M1S	=	213	260	CACCCACACCACACCCACACACCCACACCCACACCACACC	IIIIIIIIIIIHIIIIHIIIGIIIHDDG8E?@:??DDDA@	XT:A:M	NM:i:1	SM:i:17	AM:i:17	XM:i:0	XO:i:1	
+
+    $ samtools view -bS SRR527547.sam > SRR527547.unsrt.bam
+    $ samtools sort SRR527547.unsrt.bam SRR527547
+    # this will produce SRR527547.bam
+    $ samtools index SRR527547.bam
+    $ samtools view -h @SQ	SN:chrV	LN:576874
+    @SQ	SN:chrVI	LN:270161
+    @SQ	SN:chrVII	LN:1090940
+    @SQ	SN:chrVIII	LN:562643
+    @SQ	SN:chrIX	LN:439888
+    @SQ	SN:chrX	LN:745751
+    @SQ	SN:chrXI	LN:666816
+    @SQ	SN:chrXII	LN:1078177
+    @SQ	SN:chrXIII	LN:924431
+    @SQ	SN:chrXIV	LN:784333
+    @SQ	SN:chrXV	LN:1091291
+    @SQ	SN:chrXVI	LN:948066
+    @SQ	SN:chrMito	LN:85779
+    @PG	ID:bwa	PN:bwa	VN:0.6.2-r131
+    SRR527547.1387762	163	chrI	1	17	3S25M1D11M1S	=	213	260	
+      CACCCACACCACACCCACACACCCACACCCACACCACACC	IIIIIIIIIIIHIIIIHIIIGIIIHDDG8E?@:??DDDA@	
+      XT:A:M	NM:i:1	SM:i:17	AM:i:17	XM:i:0	XO:i:1	
 
 ---
 #SAM format
@@ -316,3 +382,16 @@ SRR527547.1387762	163	chrI	1	17	3S25M1D11M1S	=	213	260	CACCCACACCACACCCACACACCCA
     47896 + 0 singletons (1.06%:-nan%)
     17769 + 0 with mate mapped to a different chr
     6069 + 0 with mate mapped to a different chr (mapQ>=5)
+
+---
+#SAMtools and VCFtools to call SNPs
+
+---
+#GATK to call SNPs
+
+---
+#GATK to call INDELs
+
+---
+#VCFtools to evaluate and manipulate
+

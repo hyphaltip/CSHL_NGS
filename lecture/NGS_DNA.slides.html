@@ -25,7 +25,7 @@
 <head>
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
     <meta http-equiv="X-UA-Compatible" content="chrome=1">
-    <title>NGS sequence data</title>
+    <title>NGS Sequence data</title>
     <!-- Styles -->
     
     <link rel="stylesheet" media="print" href="../themes/luckywhite/css/print.css">
@@ -47,6 +47,39 @@
       <div id="presenter_note"></div>
     </div>
     <div class="slides">
+      
+      <!-- slide source: NGS_DNA.slides.md -->
+      <div class="slide-wrapper">
+        <div class="slide">
+          <div class="inner">
+            
+            <header><h1>NGS Sequence data</h1></header>
+            
+            
+            <section><p>Jason Stajich</p>
+<p>UC Riverside</p>
+<p>jason.stajich[at]ucr.edu</p>
+<p>twitter:<a href="http://twitter.com/hyphaltip">hyphaltip</a> <a href="http://twitter.com/stajichlab">stajichlab</a></p></section>
+            
+          </div>
+          <div class="presenter_notes">
+            <header><h1>Presenter Notes</h1></header>
+            <section>
+            
+            </section>
+          </div>
+          <footer>
+            
+            <aside class="source">
+              Source: <a href="NGS_DNA.slides.md">NGS_DNA.slides.md</a>
+            </aside>
+            
+            <aside class="page_number">
+              1/34
+            </aside>
+          </footer>
+        </div>
+      </div>
       
       <!-- slide source: NGS_DNA.slides.md -->
       <div class="slide-wrapper">
@@ -80,7 +113,7 @@
             </aside>
             
             <aside class="page_number">
-              1/28
+              2/34
             </aside>
           </footer>
         </div>
@@ -131,7 +164,7 @@ XXX - How much does IonTorrent cost and how dense?</p>
             </aside>
             
             <aside class="page_number">
-              2/28
+              3/34
             </aside>
           </footer>
         </div>
@@ -177,40 +210,7 @@ T11332321002210131011131332200002000120000200001000
             </aside>
             
             <aside class="page_number">
-              3/28
-            </aside>
-          </footer>
-        </div>
-      </div>
-      
-      <!-- slide source: NGS_DNA.slides.md -->
-      <div class="slide-wrapper">
-        <div class="slide">
-          <div class="inner">
-            
-            <header><h1>FASTQ Quality score scale</h1></header>
-            
-            
-            <section><ol>
-<li>PHRED (33 offset)</li>
-<li></li>
-</ol></section>
-            
-          </div>
-          <div class="presenter_notes">
-            <header><h1>Presenter Notes</h1></header>
-            <section>
-            
-            </section>
-          </div>
-          <footer>
-            
-            <aside class="source">
-              Source: <a href="NGS_DNA.slides.md">NGS_DNA.slides.md</a>
-            </aside>
-            
-            <aside class="page_number">
-              4/28
+              4/34
             </aside>
           </footer>
         </div>
@@ -255,7 +255,7 @@ J - Illumina 1.5+ Phred+64,  raw reads typically (3, 40)
             </aside>
             
             <aside class="page_number">
-              5/28
+              5/34
             </aside>
           </footer>
         </div>
@@ -275,6 +275,8 @@ cell of the read.</p>
 in file 1 is paired with first read in file 2, etc. This is how data
 come from the sequence base calling pipeline.  The trailing /1 and /2
 indicate they are the read-pair 1 or 2. </p>
+<p>In this case #CTTGTA indicates the barcode sequence since this was
+part of a multiplexed run.</p>
 <p>File: Project1_lane6_1_sequence.txt</p>
 <pre><code>@HWI-ST397_0000:2:1:2248:2126#CTTGTA/1
 TTGGATCTGAAAGATGAATGTGAGAGACACAATCCAAGTCATCTCTCATG
@@ -302,7 +304,7 @@ CTGGCATTTTCACCCAAATTGCTTTTAACCCTTGGGATCGTGATTCACAA
             </aside>
             
             <aside class="page_number">
-              6/28
+              6/34
             </aside>
           </footer>
         </div>
@@ -325,9 +327,11 @@ keeping them separate. However the order of the reads must be the same
 for the pairing to work since many tools ignore the IDs (since this
 requires additional memory to track these) and instead assume in same
 order in both files.</p>
-<p>Orientation of the reads depends on the library type. Whether they are
---&gt; &lt;-- or --&gt; --&gt; depends on if it is Paired End or Mate-Pair library
-prepration protocol.</p></section>
+<p>Orientation of the reads depends on the library type. Whether they are </p>
+<pre><code>--&gt; &lt;-- 
+--&gt; --&gt;
+</code></pre>
+<p>It depends on if it is Paired End or Mate-Pair library prepration protocol.</p></section>
             
           </div>
           <div class="presenter_notes">
@@ -343,7 +347,7 @@ prepration protocol.</p></section>
             </aside>
             
             <aside class="page_number">
-              7/28
+              7/34
             </aside>
           </footer>
         </div>
@@ -358,12 +362,13 @@ prepration protocol.</p></section>
             
             
             <section><ul>
-<li>Trimming (FASTX_Toolkit, sickle)<ul>
-<li>Adapative vs hard cutoff</li>
+<li>Trimming<ul>
+<li>FASTX_toolkit, sickle</li>
+<li>Adapative or hard cutoff</li>
 </ul>
 </li>
-<li>Paired end data</li>
-<li>Plot quality info: FASTQC</li>
+<li>Additional considerations for Paired-end data</li>
+<li>Evaluating quality info with reports</li>
 </ul></section>
             
           </div>
@@ -380,7 +385,7 @@ prepration protocol.</p></section>
             </aside>
             
             <aside class="page_number">
-              8/28
+              8/34
             </aside>
           </footer>
         </div>
@@ -398,6 +403,11 @@ prepration protocol.</p></section>
 <li>Useful for trimming, converting and filtering FASTQ and FASTA data</li>
 <li>One gotcha - Illumina quality score changes from 64 to 33 offset</li>
 <li>Default offset is 64, so to read with offset 33 data you need to use -Q 33 option</li>
+<li>fastx_quality_trimmer</li>
+<li>fastx_splitter - to split out barcodes</li>
+<li>fastq_quality_formatter - reformat quality scores (from 33 to 64 or)</li>
+<li>fastq_to_fasta - to strip off quality and return a fasta file</li>
+<li>fastx_collapser - to collapse identical reads. Header includes count of number in the bin</li>
 </ul></section>
             
           </div>
@@ -414,7 +424,7 @@ prepration protocol.</p></section>
             </aside>
             
             <aside class="page_number">
-              9/28
+              9/34
             </aside>
           </footer>
         </div>
@@ -431,6 +441,9 @@ prepration protocol.</p></section>
             <section><ul>
 <li>Filter so that X% of the reads have quality of at least quality of N </li>
 <li>Trim reads by quality from the end so that low quality bases are removed (since that is where errors tend to be)</li>
+<li>Typically we use Phred of 20 as a cutoff and 70% of the read, but you may want other settings</li>
+<li>This is adaptive trimming as it starts from end and removes bases</li>
+<li>Can also require a minimum length read after the trimming is complete</li>
 </ul></section>
             
           </div>
@@ -447,7 +460,7 @@ prepration protocol.</p></section>
             </aside>
             
             <aside class="page_number">
-              10/28
+              10/34
             </aside>
           </footer>
         </div>
@@ -483,7 +496,7 @@ prepration protocol.</p></section>
             </aside>
             
             <aside class="page_number">
-              11/28
+              11/34
             </aside>
           </footer>
         </div>
@@ -500,7 +513,7 @@ prepration protocol.</p></section>
             <section><ul>
 <li>When trimming and filtering data that is paired, we want the data to remain paired. </li>
 <li>This means when removing one sequence from a paired-file, store the other in a separate file</li>
-<li>When finished will have new File_1 and File_2 (filtered \&amp; trimmed) and a separate file File_unpaired.</li>
+<li>When finished will have new File_1 and File_2 (filtered &amp; trimmed) and a separate file File_unpaired.</li>
 <li>Usually so much data, not a bad thing to have agressive filtering</li>
 </ul></section>
             
@@ -518,7 +531,7 @@ prepration protocol.</p></section>
             </aside>
             
             <aside class="page_number">
-              12/28
+              12/34
             </aside>
           </footer>
         </div>
@@ -557,7 +570,7 @@ prepration protocol.</p></section>
             </aside>
             
             <aside class="page_number">
-              13/28
+              13/34
             </aside>
           </footer>
         </div>
@@ -572,8 +585,14 @@ prepration protocol.</p></section>
             
             
             <section><ul>
-<li>cutadapt - python script with matching</li>
-<li>SeqPrep - Preserves paired-end data and also quality filtering along with adaptor matching</li>
+<li>
+<p>cutadapt - Too to matching with alignment. Can search with multiple
+  adaptors but is pipelining each one so will take 5X as long if you
+  match for 5 adaptors.</p>
+</li>
+<li>
+<p>SeqPrep - Preserves paired-end data and also quality filtering along with adaptor matching</p>
+</li>
 </ul></section>
             
           </div>
@@ -590,7 +609,7 @@ prepration protocol.</p></section>
             </aside>
             
             <aside class="page_number">
-              14/28
+              14/34
             </aside>
           </footer>
         </div>
@@ -624,7 +643,187 @@ prepration protocol.</p></section>
             </aside>
             
             <aside class="page_number">
-              15/28
+              15/34
+            </aside>
+          </footer>
+        </div>
+      </div>
+      
+      <!-- slide source: NGS_DNA.slides.md -->
+      <div class="slide-wrapper">
+        <div class="slide">
+          <div class="inner">
+            
+            <header><h1>FASTQC  - per base quality</h1></header>
+            
+            
+            <section><p><img alt="PerBase" src="images/per_base_quality.png" title="FASTQC per base quality" /></p></section>
+            
+          </div>
+          <div class="presenter_notes">
+            <header><h1>Presenter Notes</h1></header>
+            <section>
+            
+            </section>
+          </div>
+          <footer>
+            
+            <aside class="source">
+              Source: <a href="NGS_DNA.slides.md">NGS_DNA.slides.md</a>
+            </aside>
+            
+            <aside class="page_number">
+              16/34
+            </aside>
+          </footer>
+        </div>
+      </div>
+      
+      <!-- slide source: NGS_DNA.slides.md -->
+      <div class="slide-wrapper">
+        <div class="slide">
+          <div class="inner">
+            
+            <header><h1>FASTQC  - per seq quality</h1></header>
+            
+            
+            <section><p><img alt="PerSeq" src="images/per_sequence_quality.png" title="FASTQC per sequence quality" /></p></section>
+            
+          </div>
+          <div class="presenter_notes">
+            <header><h1>Presenter Notes</h1></header>
+            <section>
+            
+            </section>
+          </div>
+          <footer>
+            
+            <aside class="source">
+              Source: <a href="NGS_DNA.slides.md">NGS_DNA.slides.md</a>
+            </aside>
+            
+            <aside class="page_number">
+              17/34
+            </aside>
+          </footer>
+        </div>
+      </div>
+      
+      <!-- slide source: NGS_DNA.slides.md -->
+      <div class="slide-wrapper">
+        <div class="slide">
+          <div class="inner">
+            
+            <header><h1>FASTQC  - per seq GC content</h1></header>
+            
+            
+            <section><p><img alt="PerGC" src="images/per_sequence_gc_content.png" title="FASTQC per sequence GC" /></p></section>
+            
+          </div>
+          <div class="presenter_notes">
+            <header><h1>Presenter Notes</h1></header>
+            <section>
+            
+            </section>
+          </div>
+          <footer>
+            
+            <aside class="source">
+              Source: <a href="NGS_DNA.slides.md">NGS_DNA.slides.md</a>
+            </aside>
+            
+            <aside class="page_number">
+              18/34
+            </aside>
+          </footer>
+        </div>
+      </div>
+      
+      <!-- slide source: NGS_DNA.slides.md -->
+      <div class="slide-wrapper">
+        <div class="slide">
+          <div class="inner">
+            
+            <header><h1>FASTQC  - Sequence Length</h1></header>
+            
+            
+            <section><p><img alt="PerLength" src="images/sequence_length_distribution.png" title="FASTQC length distribution" /></p></section>
+            
+          </div>
+          <div class="presenter_notes">
+            <header><h1>Presenter Notes</h1></header>
+            <section>
+            
+            </section>
+          </div>
+          <footer>
+            
+            <aside class="source">
+              Source: <a href="NGS_DNA.slides.md">NGS_DNA.slides.md</a>
+            </aside>
+            
+            <aside class="page_number">
+              19/34
+            </aside>
+          </footer>
+        </div>
+      </div>
+      
+      <!-- slide source: NGS_DNA.slides.md -->
+      <div class="slide-wrapper">
+        <div class="slide">
+          <div class="inner">
+            
+            <header><h1>FASTQC  - kmer distribution</h1></header>
+            
+            
+            <section><p><img alt="kmer" src="images/kmer_profiles.png" title="FASTQC kmer distribution" /></p></section>
+            
+          </div>
+          <div class="presenter_notes">
+            <header><h1>Presenter Notes</h1></header>
+            <section>
+            
+            </section>
+          </div>
+          <footer>
+            
+            <aside class="source">
+              Source: <a href="NGS_DNA.slides.md">NGS_DNA.slides.md</a>
+            </aside>
+            
+            <aside class="page_number">
+              20/34
+            </aside>
+          </footer>
+        </div>
+      </div>
+      
+      <!-- slide source: NGS_DNA.slides.md -->
+      <div class="slide-wrapper">
+        <div class="slide">
+          <div class="inner">
+            
+            <header><h1>FASTQC  - kmer table</h1></header>
+            
+            
+            <section><p><img alt="kmer" src="images/kmer_table.png" title="FASTQC kmer table" /></p></section>
+            
+          </div>
+          <div class="presenter_notes">
+            <header><h1>Presenter Notes</h1></header>
+            <section>
+            
+            </section>
+          </div>
+          <footer>
+            
+            <aside class="source">
+              Source: <a href="NGS_DNA.slides.md">NGS_DNA.slides.md</a>
+            </aside>
+            
+            <aside class="page_number">
+              21/34
             </aside>
           </footer>
         </div>
@@ -652,7 +851,7 @@ prepration protocol.</p></section>
             </aside>
             
             <aside class="page_number">
-              16/28
+              22/34
             </aside>
           </footer>
         </div>
@@ -682,7 +881,7 @@ prepration protocol.</p></section>
             </aside>
             
             <aside class="page_number">
-              17/28
+              23/34
             </aside>
           </footer>
         </div>
@@ -697,12 +896,12 @@ prepration protocol.</p></section>
             
             
             <section><p>Strategy requires faster searching than BLAST or FASTA
-approach. Several approaches have been developed from only </p>
-<ul>
-<li>Burrows-Wheeler Transform is a speed up that is accomplished
+approach. Some approaches have been developed to make this fast enough for Millions of sequences.
+<em> Burrows-Wheeler Transform is a speed up that is accomplished
 through a transformation of the data. Requires and indexing of the
-search database (typically the genome).</li>
-</ul></section>
+search database (typically the genome). BWA, Bowtie
+</em> ? LASTZ
+* ? BFAST</p></section>
             
           </div>
           <div class="presenter_notes">
@@ -718,7 +917,7 @@ search database (typically the genome).</li>
             </aside>
             
             <aside class="page_number">
-              18/28
+              24/34
             </aside>
           </footer>
         </div>
@@ -729,7 +928,7 @@ search database (typically the genome).</li>
         <div class="slide">
           <div class="inner">
             
-            <header><h1>Workflow</h1></header>
+            <header><h1>Workflow for variant detection</h1></header>
             
             
             <section><ul>
@@ -738,7 +937,7 @@ search database (typically the genome).</li>
 <li>Re-trim if needed</li>
 <li>Align</li>
 <li>Possible realign around variants</li>
-<li>Call variants</li>
+<li>Call variants - SNPs or Indels</li>
 <li>Possibly calibrate or optimize with gold standard (possible in some species like Human)</li>
 </ul></section>
             
@@ -756,7 +955,7 @@ search database (typically the genome).</li>
             </aside>
             
             <aside class="page_number">
-              19/28
+              25/34
             </aside>
           </footer>
         </div>
@@ -767,12 +966,21 @@ search database (typically the genome).</li>
         <div class="slide">
           <div class="inner">
             
-            <header><h1>Short read Alignment for DNA</h1></header>
+            <header><h1>NGS Alignment for DNA</h1></header>
             
             
             <section><ul>
-<li>Bowtie, BWA, LAST, BFAST</li>
-<li>Short read alignment</li>
+<li>Short reads (30-200bp) <ul>
+<li>Bowtie and BWA - implemented with the BWT algorithm, very easy to setup and run</li>
+<li>SSAHA also useful, uses fair amount of memory</li>
+<li>BFAST - also good for DNA, supports Bisulfide seq,color-space but more complicated to run</li>
+</ul>
+</li>
+<li>Longer reads (e.g. PacBio, 454, Sanger reads)<ul>
+<li>BWA has a BWA-SW mode using does a Smith-Waterman to place reads. Can tolerate large indels much better than standard BWA algorithm but slower.</li>
+<li>LAST for long reads</li>
+</ul>
+</li>
 </ul></section>
             
           </div>
@@ -789,7 +997,7 @@ search database (typically the genome).</li>
             </aside>
             
             <aside class="page_number">
-              20/28
+              26/34
             </aside>
           </footer>
         </div>
@@ -800,13 +1008,21 @@ search database (typically the genome).</li>
         <div class="slide">
           <div class="inner">
             
-            <header><h1>Longer read alignment</h1></header>
+            <header><h1>BWA alignment choices</h1></header>
             
             
-            <section><ul>
-<li>BWA has a BWA-SW mode which is for longer (300bp+) reads which does a Smith-Waterman to place reads. Can tolerate large indels much better than standard BWA algorithm</li>
-<li>LAST for long reads too</li>
-</ul></section>
+            <section><p>From BWA manual</p>
+<p>On 350‐1000bp reads, BWA‐SW is several to tens of times faster than
+    the existing programs. Its accuracy is comparable to SSAHA2, more
+    accurate than BLAT. Like BLAT, BWA‐SW also finds chimera which may
+    pose a challenge to SSAHA2. On 10‐100kbp queries where chimera
+    detection is important, BWA‐SW is over 10X faster than BLAT while
+    being more sensitive.</p>
+<p>BWA‐SW can also be used to align ~100bp reads, but it is slower than
+    the short‐read algorithm. Its sensitivity and accuracy is lower
+    than SSAHA2 especially when the sequencing error rate is above
+    2%. This is the trade‐off of the 30X speed up in comparison to
+    SSAHA2’s ‐454 mode.</p></section>
             
           </div>
           <div class="presenter_notes">
@@ -822,7 +1038,7 @@ search database (typically the genome).</li>
             </aside>
             
             <aside class="page_number">
-              21/28
+              27/34
             </aside>
           </footer>
         </div>
@@ -838,10 +1054,9 @@ search database (typically the genome).</li>
             
             <section><ul>
 <li>For SOLiD data, need to either convert sequences into FASTQ or run with colorspace aware aligner<ul>
-<li>BWA, SHRiMP, BFAST are all tuned for color-space</li>
+<li>BWA, SHRiMP, BFAST can do color-space alignment</li>
 </ul>
 </li>
-<li>Requires some exploration to get it right</li>
 </ul></section>
             
           </div>
@@ -858,7 +1073,7 @@ search database (typically the genome).</li>
             </aside>
             
             <aside class="page_number">
-              22/28
+              28/34
             </aside>
           </footer>
         </div>
@@ -873,7 +1088,7 @@ search database (typically the genome).</li>
             
             
             <section><ul>
-<li>Typical aligners are optimized for speed</li>
+<li>Typical aligners are optimized for speed, find best place for the read.</li>
 <li>For calling SNP and Indel positions, important to have optimal alignment</li>
 <li>Realignment around variable positions to insure best placement of read alignment<ul>
 <li>Stampy applies this with fast BWA alignment followed by full Smith-Waterman alignment around the variable position</li>
@@ -896,7 +1111,7 @@ search database (typically the genome).</li>
             </aside>
             
             <aside class="page_number">
-              23/28
+              29/34
             </aside>
           </footer>
         </div>
@@ -933,7 +1148,7 @@ search database (typically the genome).</li>
             </aside>
             
             <aside class="page_number">
-              24/28
+              30/34
             </aside>
           </footer>
         </div>
@@ -958,13 +1173,13 @@ search database (typically the genome).</li>
 </ul>
 </li>
 <li>
-<p><a href="http://picard.sf.net">Picard</a></p>
+<p><a href="http://picard.sf.net">Picard</a> - java library for manipulation of SAM/BAM files </p>
 </li>
-<li><a href="http://code.google.com/p/bedtools">BEDTools</a><ul>
-<li>generate coverage data from BAM files with GenomeGraph</li>
+<li><a href="http://code.google.com/p/bedtools">BEDTools</a> - C tools for interval query in BED,GFF and many other format fiels<ul>
+<li>Can generate per-base or per-window coverage from BAM files with GenomeGraph</li>
 </ul>
 </li>
-<li><a href="https://github.com/pezmaster31/bamtools">BAMTools</a></li>
+<li><a href="https://github.com/pezmaster31/bamtools">BAMTools</a> C++ tools for BAM manipulation and statistics</li>
 </ul></section>
             
           </div>
@@ -981,7 +1196,7 @@ search database (typically the genome).</li>
             </aside>
             
             <aside class="page_number">
-              25/28
+              31/34
             </aside>
           </footer>
         </div>
@@ -989,40 +1204,40 @@ search database (typically the genome).</li>
       
       <!-- slide source: NGS_DNA.slides.md -->
       <div class="slide-wrapper">
-        <div class="slide has_code">
+        <div class="slide">
           <div class="inner">
             
             <header><h1>Using samtools</h1></header>
             
             
-            <section><div class="highlight"><pre><span class="lineno">1</span> <span class="nv">$ </span>samtools view -h SRR527547.realign.W303.bam
-<span class="lineno">2</span> samtools view -h SRR527547.realign.W303.bam | more
-<span class="lineno">3</span> @HD VN:1.0  GO:none SO:coordinate
-<span class="lineno">4</span> @SQ SN:chrI LN:230218   UR:file:/bigdata/jstajich/Teaching/CSHL_2012_NGS/examples/genome/Saccharomyces_cerevisiae.fa    M5:6681ac2f62509cfc220d78751b8dc524
-<span class="lineno">5</span> @SQ SN:chrII    LN:813184   UR:file:/bigdata/jstajich/Teaching/CSHL_2012_NGS/examples/genome/Saccharomyces_cerevisiae.fa    M5:97a317c689cbdd7e92a5c159acd290d2
-</pre></div>
+            <section><pre><code>$ samtools view -h SRR527547.realign.W303.bam
+samtools view -h SRR527547.realign.W303.bam | more
+@HD VN:1.0  GO:none SO:coordinate
+@SQ SN:chrI LN:230218   UR:file:/bigdata/jstajich/Teaching/CSHL_2012_NGS/examples/genome/Saccharomyces_cerevisiae.fa    M5:6681ac2f62509cfc220d78751b8dc524
+@SQ SN:chrII    LN:813184   UR:file:/bigdata/jstajich/Teaching/CSHL_2012_NGS/examples/genome/Saccharomyces_cerevisiae.fa    M5:97a317c689cbdd7e92a5c159acd290d2
 
-<p>!bash
-   $ samtools view -bS SRR527547.sam &gt; SRR527547.unsrt.bam
-   $ samtools sort SRR527547.unsrt.bam SRR527547
-   # this will produce SRR527547.bam
-   $ samtools index SRR527547.bam
-   $ samtools view -h @SQ   SN:chrV LN:576874
-   @SQ  SN:chrVI    LN:270161
-   @SQ  SN:chrVII   LN:1090940
-   @SQ  SN:chrVIII  LN:562643
-   @SQ  SN:chrIX    LN:439888
-   @SQ  SN:chrX LN:745751
-   @SQ  SN:chrXI    LN:666816
-   @SQ  SN:chrXII   LN:1078177
-   @SQ  SN:chrXIII  LN:924431
-   @SQ  SN:chrXIV   LN:784333
-   @SQ  SN:chrXV    LN:1091291
-   @SQ  SN:chrXVI   LN:948066
-   @SQ  SN:chrMito  LN:85779
-   @PG  ID:bwa  PN:bwa  VN:0.6.2-r131
-SRR527547.1387762   163 chrI    1   17  3S25M1D11M1S    =   213 260 CACCCACACCACACCCACACACCCACACCCACACCACACC    IIIIIIIIIIIHIIIIHIIIGIIIHDDG8E?@:??DDDA@    XT:A:M  NM:i:1  SM:i:17 AM:i:17 XM:i:0  XO:i:1<br />
-</p></section>
+$ samtools view -bS SRR527547.sam &gt; SRR527547.unsrt.bam
+$ samtools sort SRR527547.unsrt.bam SRR527547
+# this will produce SRR527547.bam
+$ samtools index SRR527547.bam
+$ samtools view -h @SQ  SN:chrV LN:576874
+@SQ SN:chrVI    LN:270161
+@SQ SN:chrVII   LN:1090940
+@SQ SN:chrVIII  LN:562643
+@SQ SN:chrIX    LN:439888
+@SQ SN:chrX LN:745751
+@SQ SN:chrXI    LN:666816
+@SQ SN:chrXII   LN:1078177
+@SQ SN:chrXIII  LN:924431
+@SQ SN:chrXIV   LN:784333
+@SQ SN:chrXV    LN:1091291
+@SQ SN:chrXVI   LN:948066
+@SQ SN:chrMito  LN:85779
+@PG ID:bwa  PN:bwa  VN:0.6.2-r131
+SRR527547.1387762   163 chrI    1   17  3S25M1D11M1S    =   213 260 
+  CACCCACACCACACCCACACACCCACACCCACACCACACC  IIIIIIIIIIIHIIIIHIIIGIIIHDDG8E?@:??DDDA@    
+  XT:A:M    NM:i:1  SM:i:17 AM:i:17 XM:i:0  XO:i:1
+</code></pre></section>
             
           </div>
           <div class="presenter_notes">
@@ -1038,7 +1253,7 @@ SRR527547.1387762   163 chrI    1   17  3S25M1D11M1S    =   213 260 CACCCACACCAC
             </aside>
             
             <aside class="page_number">
-              26/28
+              32/34
             </aside>
           </footer>
         </div>
@@ -1068,7 +1283,7 @@ SRR527547.1387762   163 chrI    1   17  3S25M1D11M1S    =   213 260 CACCCACACCAC
             </aside>
             
             <aside class="page_number">
-              27/28
+              33/34
             </aside>
           </footer>
         </div>
@@ -1109,7 +1324,7 @@ SRR527547.1387762   163 chrI    1   17  3S25M1D11M1S    =   213 260 CACCCACACCAC
             </aside>
             
             <aside class="page_number">
-              28/28
+              34/34
             </aside>
           </footer>
         </div>
@@ -1124,25 +1339,25 @@ SRR527547.1387762   163 chrI    1   17  3S25M1D11M1S    =   213 260 CACCCACACCAC
       <caption>Table of Contents</caption>
       
       <tr id="toc-row-1">
-        <th><a href="#slide1">NGS sequence data</a></th>
+        <th><a href="#slide1">NGS Sequence data</a></th>
         <td><a href="#slide1">1</a></td>
       </tr>
       
       
       <tr id="toc-row-2">
-        <th><a href="#slide2">Sequence data sources</a></th>
+        <th><a href="#slide2">NGS sequence data</a></th>
         <td><a href="#slide2">2</a></td>
       </tr>
       
       
       <tr id="toc-row-3">
-        <th><a href="#slide3">File formats</a></th>
+        <th><a href="#slide3">Sequence data sources</a></th>
         <td><a href="#slide3">3</a></td>
       </tr>
       
       
       <tr id="toc-row-4">
-        <th><a href="#slide4">FASTQ Quality score scale</a></th>
+        <th><a href="#slide4">File formats</a></th>
         <td><a href="#slide4">4</a></td>
       </tr>
       
@@ -1214,80 +1429,116 @@ SRR527547.1387762   163 chrI    1   17  3S25M1D11M1S    =   213 260 CACCCACACCAC
       
       
       <tr id="toc-row-16">
-        <th><a href="#slide16">Getting ready to align sequence</a></th>
+        <th><a href="#slide16">FASTQC  - per base quality</a></th>
         <td><a href="#slide16">16</a></td>
       </tr>
       
       
       <tr id="toc-row-17">
-        <th><a href="#slide17"><a href="http://wwwdev.ebi.ac.uk/fg/hts_mappers/">Sequence aligners</a></a></th>
+        <th><a href="#slide17">FASTQC  - per seq quality</a></th>
         <td><a href="#slide17">17</a></td>
       </tr>
       
       
       <tr id="toc-row-18">
-        <th><a href="#slide18">Short read aligners</a></th>
+        <th><a href="#slide18">FASTQC  - per seq GC content</a></th>
         <td><a href="#slide18">18</a></td>
       </tr>
       
       
       <tr id="toc-row-19">
-        <th><a href="#slide19">Workflow</a></th>
+        <th><a href="#slide19">FASTQC  - Sequence Length</a></th>
         <td><a href="#slide19">19</a></td>
       </tr>
       
       
       <tr id="toc-row-20">
-        <th><a href="#slide20">Short read Alignment for DNA</a></th>
+        <th><a href="#slide20">FASTQC  - kmer distribution</a></th>
         <td><a href="#slide20">20</a></td>
       </tr>
       
       
       <tr id="toc-row-21">
-        <th><a href="#slide21">Longer read alignment</a></th>
+        <th><a href="#slide21">FASTQC  - kmer table</a></th>
         <td><a href="#slide21">21</a></td>
       </tr>
       
       
       <tr id="toc-row-22">
-        <th><a href="#slide22">Colorspace alignment</a></th>
+        <th><a href="#slide22">Getting ready to align sequence</a></th>
         <td><a href="#slide22">22</a></td>
       </tr>
       
       
       <tr id="toc-row-23">
-        <th><a href="#slide23">Realignment for variant identification</a></th>
+        <th><a href="#slide23"><a href="http://wwwdev.ebi.ac.uk/fg/hts_mappers/">Sequence aligners</a></a></th>
         <td><a href="#slide23">23</a></td>
       </tr>
       
       
       <tr id="toc-row-24">
-        <th><a href="#slide24">Alignment data format</a></th>
+        <th><a href="#slide24">Short read aligners</a></th>
         <td><a href="#slide24">24</a></td>
       </tr>
       
       
       <tr id="toc-row-25">
-        <th><a href="#slide25">Manipulating SAM/BAM</a></th>
+        <th><a href="#slide25">Workflow for variant detection</a></th>
         <td><a href="#slide25">25</a></td>
       </tr>
       
       
       <tr id="toc-row-26">
-        <th><a href="#slide26">Using samtools</a></th>
+        <th><a href="#slide26">NGS Alignment for DNA</a></th>
         <td><a href="#slide26">26</a></td>
       </tr>
       
       
       <tr id="toc-row-27">
-        <th><a href="#slide27">SAM format</a></th>
+        <th><a href="#slide27">BWA alignment choices</a></th>
         <td><a href="#slide27">27</a></td>
       </tr>
       
       
       <tr id="toc-row-28">
-        <th><a href="#slide28">samtools flagstat</a></th>
+        <th><a href="#slide28">Colorspace alignment</a></th>
         <td><a href="#slide28">28</a></td>
+      </tr>
+      
+      
+      <tr id="toc-row-29">
+        <th><a href="#slide29">Realignment for variant identification</a></th>
+        <td><a href="#slide29">29</a></td>
+      </tr>
+      
+      
+      <tr id="toc-row-30">
+        <th><a href="#slide30">Alignment data format</a></th>
+        <td><a href="#slide30">30</a></td>
+      </tr>
+      
+      
+      <tr id="toc-row-31">
+        <th><a href="#slide31">Manipulating SAM/BAM</a></th>
+        <td><a href="#slide31">31</a></td>
+      </tr>
+      
+      
+      <tr id="toc-row-32">
+        <th><a href="#slide32">Using samtools</a></th>
+        <td><a href="#slide32">32</a></td>
+      </tr>
+      
+      
+      <tr id="toc-row-33">
+        <th><a href="#slide33">SAM format</a></th>
+        <td><a href="#slide33">33</a></td>
+      </tr>
+      
+      
+      <tr id="toc-row-34">
+        <th><a href="#slide34">samtools flagstat</a></th>
+        <td><a href="#slide34">34</a></td>
       </tr>
       
       
