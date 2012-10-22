@@ -356,7 +356,8 @@ with long chromosomes.
     $ bwa aln -q 20 -t 16 -f SRR567756_1.sai Saccharomyces SRR567756_1.fastq
     $ bwa aln -q 20 -t 16 -f SRR567756_2.sai Saccharomyces SRR567756_2.fastq
     # do Paired-End alignment and create SAM file
-    $ bwa sampe -f SRR567756.sam Saccharomyces SRR567756_1.sai SRR567756_2.sai SRR567756_1.fastq SRR567756_2.fastq
+    $ bwa sampe -f SRR567756.sam Saccharomyces SRR567756_1.sai SRR567756_2.sai \
+      SRR567756_1.fastq SRR567756_2.fastq
 
     # generate BAM file with samtools
     $ samtools view -b -S SRR567756.sam > SRR567756.unsrt.bam
@@ -467,8 +468,9 @@ Then realign based on these intervals
 ---
 #SAMtools and VCFtools to call SNPs
 
-    $ samtools mpileup -D -S -gu -f genome/Saccharomyces_cerevisiae.fa ABC.bam | bcftools view -bvcg - > ABC.raw.bcf
-    bcftools view ABC.raw.bcf | vcfutils.pl varFilter -D100 > ABC.filter.vcf
+    $ samtools mpileup -D -S -gu -f genome/Saccharomyces_cerevisiae.fa ABC.bam | \
+     bcftools view -bvcg - > ABC.raw.bcf
+    $ bcftools view ABC.raw.bcf | vcfutils.pl varFilter -D100 > ABC.filter.vcf
 
 ---
 #GATK to call SNPs

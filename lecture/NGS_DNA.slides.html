@@ -2503,7 +2503,8 @@ $ bwa index Saccharomyces
 $ bwa aln -q 20 -t 16 -f SRR567756_1.sai Saccharomyces SRR567756_1.fastq
 $ bwa aln -q 20 -t 16 -f SRR567756_2.sai Saccharomyces SRR567756_2.fastq
 # do Paired-End alignment and create SAM file
-$ bwa sampe -f SRR567756.sam Saccharomyces SRR567756_1.sai SRR567756_2.sai SRR567756_1.fastq SRR567756_2.fastq
+$ bwa sampe -f SRR567756.sam Saccharomyces SRR567756_1.sai SRR567756_2.sai \
+  SRR567756_1.fastq SRR567756_2.fastq
 
 # generate BAM file with samtools
 $ samtools view -b -S SRR567756.sam &gt; SRR567756.unsrt.bam
@@ -2783,8 +2784,9 @@ METRICS_FILE=STRAIN.dedup.metrics CREATE_INDEX=true VALIDATION_STRINGENCY=SILENT
             <header><h1>SAMtools and VCFtools to call SNPs</h1></header>
             
             
-            <section><pre><code>$ samtools mpileup -D -S -gu -f genome/Saccharomyces_cerevisiae.fa ABC.bam | bcftools view -bvcg - &gt; ABC.raw.bcf
-bcftools view ABC.raw.bcf | vcfutils.pl varFilter -D100 &gt; ABC.filter.vcf
+            <section><pre><code>$ samtools mpileup -D -S -gu -f genome/Saccharomyces_cerevisiae.fa ABC.bam | \
+ bcftools view -bvcg - &gt; ABC.raw.bcf
+$ bcftools view ABC.raw.bcf | vcfutils.pl varFilter -D100 &gt; ABC.filter.vcf
 </code></pre></section>
             
           </div>
