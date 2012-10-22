@@ -10,7 +10,7 @@ Preparation Steps
 
 2. Download the Saccharomyces genome from [SGD
 site](http://downloads.yeastgenome.org/sequence/S288C_reference/genome_releases/S288C_reference_genome_R64-1-1_20110203.tgz). Uncompress this and get the .fsa file which is the genome. Copy it and run rename_seq.pl on it to fix the chromosome names so they match the GFF file:
- https://github.com/hyphaltip/CSHL_2012_NGS/blob/master/data/rename_seq.pl
+ [https://github.com/hyphaltip/CSHL_2012_NGS/blob/master/data/rename_seq.pl](https://github.com/hyphaltip/CSHL_2012_NGS/blob/master/data/rename_seq.pl)
 
  - You may need to fix this GFF file so it doesn't have any sequence
  - Do a grep to find where the '>' lines are where the sequence as fasta is in there and find the first one
