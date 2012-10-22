@@ -82,9 +82,16 @@ Colorspace (SOLiD) - CSFASTQ
         (Note: See discussion above). 
 
 ---
-#Read naming and Paired-End information
+#Read naming
 
-Paired-End naming
+ID is usually the machine ID followed by flowcell number column, row,
+cell of the read.
+
+Paired-End naming can exist because data are in two file, first read
+in file 1 is paired with first read in file 2, etc. This is how data
+come from the sequence base calling pipeline.  The trailing /1 and /2
+indicate they are the read-pair 1 or 2. 
+
 File: Project1_lane6_1_sequence.txt
 
     @HWI-ST397_0000:2:1:2248:2126#CTTGTA/1
@@ -99,7 +106,25 @@ File: Project1_lane6_2_sequence.txt
     +HWI-ST397_0000:2:1:2248:2126#CTTGTA/2
     ]YYY_\[[][da_da_aa_a_a_b_Y]Z]ZS[]L[\ddccbdYc\ecacX
 
+---
+#Paired-end reads
 
+These files can be interleaved, several simple tools exist, see velvet
+package for shuffleSequences scripts which can interleave them for
+you.  
+
+Interleaved was requried for some assemblers, but now many support
+keeping them separate. However the order of the reads must be the same
+for the pairing to work since many tools ignore the IDs (since this
+requires additional memory to track these) and instead assume in same
+order in both files.
+
+Orientation of the reads depends on the library type. Whether they are 
+ 
+    --> <-- 
+    --> --> 
+
+It depends on if it is Paired End or Mate-Pair library prepration protocol.
 
 ---
 #Data QC
@@ -167,7 +192,7 @@ File: Project1_lane6_2_sequence.txt
 #Getting ready to align sequence
 ---
 #[Sequence aligners](http://wwwdev.ebi.ac.uk/fg/hts_mappers/)
-![Mappers](./mappers_timeline.jpeg "HTS timeline")
+![Mappers](images/mappers_timeline.jpeg "HTS timeline")
 
 ---
 #Short read aligners
@@ -275,6 +300,7 @@ SRR527547.1387762	163	chrI	1	17	3S25M1D11M1S	=	213	260	CACCCACACCACACCCACACACCCA
 ---
 #SAM format
 
+![SAM Table](images/SAMFormatTable.png "SAM 11 columns")
 
 ---
 #samtools flagstat

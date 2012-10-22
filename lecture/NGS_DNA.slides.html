@@ -80,7 +80,7 @@
             </aside>
             
             <aside class="page_number">
-              1/27
+              1/28
             </aside>
           </footer>
         </div>
@@ -131,7 +131,7 @@ XXX - How much does IonTorrent cost and how dense?</p>
             </aside>
             
             <aside class="page_number">
-              2/27
+              2/28
             </aside>
           </footer>
         </div>
@@ -177,7 +177,7 @@ T11332321002210131011131332200002000120000200001000
             </aside>
             
             <aside class="page_number">
-              3/27
+              3/28
             </aside>
           </footer>
         </div>
@@ -210,7 +210,7 @@ T11332321002210131011131332200002000120000200001000
             </aside>
             
             <aside class="page_number">
-              4/27
+              4/28
             </aside>
           </footer>
         </div>
@@ -255,7 +255,7 @@ J - Illumina 1.5+ Phred+64,  raw reads typically (3, 40)
             </aside>
             
             <aside class="page_number">
-              5/27
+              5/28
             </aside>
           </footer>
         </div>
@@ -266,11 +266,16 @@ J - Illumina 1.5+ Phred+64,  raw reads typically (3, 40)
         <div class="slide">
           <div class="inner">
             
-            <header><h1>Read naming and Paired-End information</h1></header>
+            <header><h1>Read naming</h1></header>
             
             
-            <section><p>Paired-End naming
-File: Project1_lane6_1_sequence.txt</p>
+            <section><p>ID is usually the machine ID followed by flowcell number column, row,
+cell of the read.</p>
+<p>Paired-End naming can exist because data are in two file, first read
+in file 1 is paired with first read in file 2, etc. This is how data
+come from the sequence base calling pipeline.  The trailing /1 and /2
+indicate they are the read-pair 1 or 2. </p>
+<p>File: Project1_lane6_1_sequence.txt</p>
 <pre><code>@HWI-ST397_0000:2:1:2248:2126#CTTGTA/1
 TTGGATCTGAAAGATGAATGTGAGAGACACAATCCAAGTCATCTCTCATG
 +HWI-ST397_0000:2:1:2248:2126#CTTGTA/1
@@ -297,7 +302,48 @@ CTGGCATTTTCACCCAAATTGCTTTTAACCCTTGGGATCGTGATTCACAA
             </aside>
             
             <aside class="page_number">
-              6/27
+              6/28
+            </aside>
+          </footer>
+        </div>
+      </div>
+      
+      <!-- slide source: NGS_DNA.slides.md -->
+      <div class="slide-wrapper">
+        <div class="slide">
+          <div class="inner">
+            
+            <header><h1>Paired-end reads</h1></header>
+            
+            
+            <section><p>These files can be interleaved, several simple tools exist, see velvet
+package for shuffleSequences scripts which can interleave them for
+you.<br />
+</p>
+<p>Interleaved was requried for some assemblers, but now many support
+keeping them separate. However the order of the reads must be the same
+for the pairing to work since many tools ignore the IDs (since this
+requires additional memory to track these) and instead assume in same
+order in both files.</p>
+<p>Orientation of the reads depends on the library type. Whether they are
+--&gt; &lt;-- or --&gt; --&gt; depends on if it is Paired End or Mate-Pair library
+prepration protocol.</p></section>
+            
+          </div>
+          <div class="presenter_notes">
+            <header><h1>Presenter Notes</h1></header>
+            <section>
+            
+            </section>
+          </div>
+          <footer>
+            
+            <aside class="source">
+              Source: <a href="NGS_DNA.slides.md">NGS_DNA.slides.md</a>
+            </aside>
+            
+            <aside class="page_number">
+              7/28
             </aside>
           </footer>
         </div>
@@ -334,7 +380,7 @@ CTGGCATTTTCACCCAAATTGCTTTTAACCCTTGGGATCGTGATTCACAA
             </aside>
             
             <aside class="page_number">
-              7/27
+              8/28
             </aside>
           </footer>
         </div>
@@ -368,7 +414,7 @@ CTGGCATTTTCACCCAAATTGCTTTTAACCCTTGGGATCGTGATTCACAA
             </aside>
             
             <aside class="page_number">
-              8/27
+              9/28
             </aside>
           </footer>
         </div>
@@ -401,7 +447,7 @@ CTGGCATTTTCACCCAAATTGCTTTTAACCCTTGGGATCGTGATTCACAA
             </aside>
             
             <aside class="page_number">
-              9/27
+              10/28
             </aside>
           </footer>
         </div>
@@ -437,7 +483,7 @@ CTGGCATTTTCACCCAAATTGCTTTTAACCCTTGGGATCGTGATTCACAA
             </aside>
             
             <aside class="page_number">
-              10/27
+              11/28
             </aside>
           </footer>
         </div>
@@ -472,7 +518,7 @@ CTGGCATTTTCACCCAAATTGCTTTTAACCCTTGGGATCGTGATTCACAA
             </aside>
             
             <aside class="page_number">
-              11/27
+              12/28
             </aside>
           </footer>
         </div>
@@ -511,7 +557,7 @@ CTGGCATTTTCACCCAAATTGCTTTTAACCCTTGGGATCGTGATTCACAA
             </aside>
             
             <aside class="page_number">
-              12/27
+              13/28
             </aside>
           </footer>
         </div>
@@ -544,7 +590,7 @@ CTGGCATTTTCACCCAAATTGCTTTTAACCCTTGGGATCGTGATTCACAA
             </aside>
             
             <aside class="page_number">
-              13/27
+              14/28
             </aside>
           </footer>
         </div>
@@ -578,7 +624,7 @@ CTGGCATTTTCACCCAAATTGCTTTTAACCCTTGGGATCGTGATTCACAA
             </aside>
             
             <aside class="page_number">
-              14/27
+              15/28
             </aside>
           </footer>
         </div>
@@ -606,7 +652,7 @@ CTGGCATTTTCACCCAAATTGCTTTTAACCCTTGGGATCGTGATTCACAA
             </aside>
             
             <aside class="page_number">
-              15/27
+              16/28
             </aside>
           </footer>
         </div>
@@ -620,7 +666,7 @@ CTGGCATTTTCACCCAAATTGCTTTTAACCCTTGGGATCGTGATTCACAA
             <header><h1><a href="http://wwwdev.ebi.ac.uk/fg/hts_mappers/">Sequence aligners</a></h1></header>
             
             
-            <section><p><img alt="Mappers" src="./mappers_timeline.jpeg" title="HTS timeline" /></p></section>
+            <section><p><img alt="Mappers" src="images/mappers_timeline.jpeg" title="HTS timeline" /></p></section>
             
           </div>
           <div class="presenter_notes">
@@ -636,7 +682,7 @@ CTGGCATTTTCACCCAAATTGCTTTTAACCCTTGGGATCGTGATTCACAA
             </aside>
             
             <aside class="page_number">
-              16/27
+              17/28
             </aside>
           </footer>
         </div>
@@ -672,7 +718,7 @@ search database (typically the genome).</li>
             </aside>
             
             <aside class="page_number">
-              17/27
+              18/28
             </aside>
           </footer>
         </div>
@@ -710,7 +756,7 @@ search database (typically the genome).</li>
             </aside>
             
             <aside class="page_number">
-              18/27
+              19/28
             </aside>
           </footer>
         </div>
@@ -743,7 +789,7 @@ search database (typically the genome).</li>
             </aside>
             
             <aside class="page_number">
-              19/27
+              20/28
             </aside>
           </footer>
         </div>
@@ -776,7 +822,7 @@ search database (typically the genome).</li>
             </aside>
             
             <aside class="page_number">
-              20/27
+              21/28
             </aside>
           </footer>
         </div>
@@ -812,7 +858,7 @@ search database (typically the genome).</li>
             </aside>
             
             <aside class="page_number">
-              21/27
+              22/28
             </aside>
           </footer>
         </div>
@@ -850,7 +896,7 @@ search database (typically the genome).</li>
             </aside>
             
             <aside class="page_number">
-              22/27
+              23/28
             </aside>
           </footer>
         </div>
@@ -887,7 +933,7 @@ search database (typically the genome).</li>
             </aside>
             
             <aside class="page_number">
-              23/27
+              24/28
             </aside>
           </footer>
         </div>
@@ -935,7 +981,7 @@ search database (typically the genome).</li>
             </aside>
             
             <aside class="page_number">
-              24/27
+              25/28
             </aside>
           </footer>
         </div>
@@ -992,7 +1038,7 @@ SRR527547.1387762   163 chrI    1   17  3S25M1D11M1S    =   213 260 CACCCACACCAC
             </aside>
             
             <aside class="page_number">
-              25/27
+              26/28
             </aside>
           </footer>
         </div>
@@ -1005,6 +1051,8 @@ SRR527547.1387762   163 chrI    1   17  3S25M1D11M1S    =   213 260 CACCCACACCAC
             
             <header><h1>SAM format</h1></header>
             
+            
+            <section><p><img alt="SAM Table" src="images/SAMFormatTable.png" title="SAM 11 columns" /></p></section>
             
           </div>
           <div class="presenter_notes">
@@ -1020,7 +1068,7 @@ SRR527547.1387762   163 chrI    1   17  3S25M1D11M1S    =   213 260 CACCCACACCAC
             </aside>
             
             <aside class="page_number">
-              26/27
+              27/28
             </aside>
           </footer>
         </div>
@@ -1061,7 +1109,7 @@ SRR527547.1387762   163 chrI    1   17  3S25M1D11M1S    =   213 260 CACCCACACCAC
             </aside>
             
             <aside class="page_number">
-              27/27
+              28/28
             </aside>
           </footer>
         </div>
@@ -1106,134 +1154,140 @@ SRR527547.1387762   163 chrI    1   17  3S25M1D11M1S    =   213 260 CACCCACACCAC
       
       
       <tr id="toc-row-6">
-        <th><a href="#slide6">Read naming and Paired-End information</a></th>
+        <th><a href="#slide6">Read naming</a></th>
         <td><a href="#slide6">6</a></td>
       </tr>
       
       
       <tr id="toc-row-7">
-        <th><a href="#slide7">Data QC</a></th>
+        <th><a href="#slide7">Paired-end reads</a></th>
         <td><a href="#slide7">7</a></td>
       </tr>
       
       
       <tr id="toc-row-8">
-        <th><a href="#slide8">FASTX toolkit</a></th>
+        <th><a href="#slide8">Data QC</a></th>
         <td><a href="#slide8">8</a></td>
       </tr>
       
       
       <tr id="toc-row-9">
-        <th><a href="#slide9">FASTX - fastx_quality_trimmer</a></th>
+        <th><a href="#slide9">FASTX toolkit</a></th>
         <td><a href="#slide9">9</a></td>
       </tr>
       
       
       <tr id="toc-row-10">
-        <th><a href="#slide10">FASTX toolkit - fastx_trimmer</a></th>
+        <th><a href="#slide10">FASTX - fastx_quality_trimmer</a></th>
         <td><a href="#slide10">10</a></td>
       </tr>
       
       
       <tr id="toc-row-11">
-        <th><a href="#slide11">Trimming paired data</a></th>
+        <th><a href="#slide11">FASTX toolkit - fastx_trimmer</a></th>
         <td><a href="#slide11">11</a></td>
       </tr>
       
       
       <tr id="toc-row-12">
-        <th><a href="#slide12">Trimming adaptors</a></th>
+        <th><a href="#slide12">Trimming paired data</a></th>
         <td><a href="#slide12">12</a></td>
       </tr>
       
       
       <tr id="toc-row-13">
-        <th><a href="#slide13">Trimming adaptors - tools</a></th>
+        <th><a href="#slide13">Trimming adaptors</a></th>
         <td><a href="#slide13">13</a></td>
       </tr>
       
       
       <tr id="toc-row-14">
-        <th><a href="#slide14">FASTQC for quality control</a></th>
+        <th><a href="#slide14">Trimming adaptors - tools</a></th>
         <td><a href="#slide14">14</a></td>
       </tr>
       
       
       <tr id="toc-row-15">
-        <th><a href="#slide15">Getting ready to align sequence</a></th>
+        <th><a href="#slide15">FASTQC for quality control</a></th>
         <td><a href="#slide15">15</a></td>
       </tr>
       
       
       <tr id="toc-row-16">
-        <th><a href="#slide16"><a href="http://wwwdev.ebi.ac.uk/fg/hts_mappers/">Sequence aligners</a></a></th>
+        <th><a href="#slide16">Getting ready to align sequence</a></th>
         <td><a href="#slide16">16</a></td>
       </tr>
       
       
       <tr id="toc-row-17">
-        <th><a href="#slide17">Short read aligners</a></th>
+        <th><a href="#slide17"><a href="http://wwwdev.ebi.ac.uk/fg/hts_mappers/">Sequence aligners</a></a></th>
         <td><a href="#slide17">17</a></td>
       </tr>
       
       
       <tr id="toc-row-18">
-        <th><a href="#slide18">Workflow</a></th>
+        <th><a href="#slide18">Short read aligners</a></th>
         <td><a href="#slide18">18</a></td>
       </tr>
       
       
       <tr id="toc-row-19">
-        <th><a href="#slide19">Short read Alignment for DNA</a></th>
+        <th><a href="#slide19">Workflow</a></th>
         <td><a href="#slide19">19</a></td>
       </tr>
       
       
       <tr id="toc-row-20">
-        <th><a href="#slide20">Longer read alignment</a></th>
+        <th><a href="#slide20">Short read Alignment for DNA</a></th>
         <td><a href="#slide20">20</a></td>
       </tr>
       
       
       <tr id="toc-row-21">
-        <th><a href="#slide21">Colorspace alignment</a></th>
+        <th><a href="#slide21">Longer read alignment</a></th>
         <td><a href="#slide21">21</a></td>
       </tr>
       
       
       <tr id="toc-row-22">
-        <th><a href="#slide22">Realignment for variant identification</a></th>
+        <th><a href="#slide22">Colorspace alignment</a></th>
         <td><a href="#slide22">22</a></td>
       </tr>
       
       
       <tr id="toc-row-23">
-        <th><a href="#slide23">Alignment data format</a></th>
+        <th><a href="#slide23">Realignment for variant identification</a></th>
         <td><a href="#slide23">23</a></td>
       </tr>
       
       
       <tr id="toc-row-24">
-        <th><a href="#slide24">Manipulating SAM/BAM</a></th>
+        <th><a href="#slide24">Alignment data format</a></th>
         <td><a href="#slide24">24</a></td>
       </tr>
       
       
       <tr id="toc-row-25">
-        <th><a href="#slide25">Using samtools</a></th>
+        <th><a href="#slide25">Manipulating SAM/BAM</a></th>
         <td><a href="#slide25">25</a></td>
       </tr>
       
       
       <tr id="toc-row-26">
-        <th><a href="#slide26">SAM format</a></th>
+        <th><a href="#slide26">Using samtools</a></th>
         <td><a href="#slide26">26</a></td>
       </tr>
       
       
       <tr id="toc-row-27">
-        <th><a href="#slide27">samtools flagstat</a></th>
+        <th><a href="#slide27">SAM format</a></th>
         <td><a href="#slide27">27</a></td>
+      </tr>
+      
+      
+      <tr id="toc-row-28">
+        <th><a href="#slide28">samtools flagstat</a></th>
+        <td><a href="#slide28">28</a></td>
       </tr>
       
       
