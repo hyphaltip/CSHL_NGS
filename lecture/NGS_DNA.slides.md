@@ -490,8 +490,9 @@ Then realign based on these intervals
 
     # run GATK with 4 threads (-nt)
     # call SNPs only (-glm, would specific INDEL for Indels or can ask for BOTH)
-    $ java -jar GenomeAnalysisTKLite.jar -T UnifiedGenotyper -glm INDEL -I SRR527545.bam \
-     -R genome/Saccharomyces_cerevisiae.fa -o SRR527545.GATK_INDEL.vcf -nt 4
+    $ java -jar GenomeAnalysisTKLite.jar -T UnifiedGenotyper\
+      -glm INDEL -I SRR527545.bam \
+      -R genome/Saccharomyces_cerevisiae.fa -o SRR527545.GATK_INDEL.vcf -nt 4
    
 ---
 #VCF Files
