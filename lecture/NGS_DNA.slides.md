@@ -452,17 +452,20 @@ To insure high quality Indelcalls, the reads need to realigned after placed by B
 
 Need to Deduplicate reads
 
-    $ java -jar picard-tools/MarkDuplicates.jar INPUT=STRAIN.sorted.bam OUTPUT=STRAIN.dedup.bam 
-    METRICS_FILE=STRAIN.dedup.metrics CREATE_INDEX=true VALIDATION_STRINGENCY=SILENT;
+    $ java -jar picard-tools/MarkDuplicates.jar INPUT=STRAIN.sorted.bam \
+      OUTPUT=STRAIN.dedup.bam METRICS_FILE=STRAIN.dedup.metrics \
+      CREATE_INDEX=true VALIDATION_STRINGENCY=SILENT
 
 Then identify Intervals around variants
 
-    $ java -jar GATK/GenomeAnalysisTK.jar -T RealignerTargetCreator -R genome/Saccharomyces_cerevisiae.fa \
-     -o STRAIN.intervals -I STRAIN.dedup.bam;
+    $ java -jar GATK/GenomeAnalysisTK.jar -T RealignerTargetCreator \
+     -R genome/Saccharomyces_cerevisiae.fa \
+     -o STRAIN.intervals -I STRAIN.dedup.bam
 
 Then realign based on these intervals
 
-    $ java -jar GATK/GenomeAnalysisTK.jar -T IndelRealigner -R genome/Saccharomyces_cerevisiae.fa \
+    $ java -jar GATK/GenomeAnalysisTK.jar -T IndelRealigner \
+     -R genome/Saccharomyces_cerevisiae.fa \
      -targetIntervalsSTRAIN.intervals -I STRAIN.dedup.bam -o STRAIN.realign.bam
 
 ---

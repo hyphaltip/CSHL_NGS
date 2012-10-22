@@ -2744,15 +2744,18 @@ for manipulating these.</p></section>
             
             <section><p>To insure high quality Indelcalls, the reads need to realigned after placed by BWA or other aligner. This can be done with PicardTools and GATK.</p>
 <p>Need to Deduplicate reads</p>
-<pre><code>$ java -jar picard-tools/MarkDuplicates.jar INPUT=STRAIN.sorted.bam OUTPUT=STRAIN.dedup.bam 
-METRICS_FILE=STRAIN.dedup.metrics CREATE_INDEX=true VALIDATION_STRINGENCY=SILENT;
+<pre><code>$ java -jar picard-tools/MarkDuplicates.jar INPUT=STRAIN.sorted.bam \
+  OUTPUT=STRAIN.dedup.bam METRICS_FILE=STRAIN.dedup.metrics \
+  CREATE_INDEX=true VALIDATION_STRINGENCY=SILENT
 </code></pre>
 <p>Then identify Intervals around variants</p>
-<pre><code>$ java -jar GATK/GenomeAnalysisTK.jar -T RealignerTargetCreator -R genome/Saccharomyces_cerevisiae.fa \
- -o STRAIN.intervals -I STRAIN.dedup.bam;
+<pre><code>$ java -jar GATK/GenomeAnalysisTK.jar -T RealignerTargetCreator \
+ -R genome/Saccharomyces_cerevisiae.fa \
+ -o STRAIN.intervals -I STRAIN.dedup.bam
 </code></pre>
 <p>Then realign based on these intervals</p>
-<pre><code>$ java -jar GATK/GenomeAnalysisTK.jar -T IndelRealigner -R genome/Saccharomyces_cerevisiae.fa \
+<pre><code>$ java -jar GATK/GenomeAnalysisTK.jar -T IndelRealigner \
+ -R genome/Saccharomyces_cerevisiae.fa \
  -targetIntervalsSTRAIN.intervals -I STRAIN.dedup.bam -o STRAIN.realign.bam
 </code></pre></section>
             
