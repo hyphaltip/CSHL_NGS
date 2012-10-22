@@ -16,26 +16,26 @@ FASTQDIR=fastq
 for file in $FASTQDIR/*.trim.fq
 do
  base=`basename $file .trim.fq`
- if [ ! -f $base.sai ]; then
-  bwa aln -q $QUALITY -t 16 -f $base.sai $GENOMEFILE $file
+ if [ ! -f aln_out/$base.sai ]; then
+  bwa aln -q $QUALITY -t 16 -f aln_out/$base.sai $GENOMEFILE $file
  fi
 done
 
-for file in *_1.sai
+for file in aln_out/*_1.sai
 do
  base=`basename $file _1.sai`
- if [ ! -f $base.sam ]; then
-  bwa sampe -f $base.sam $GENOMEFILE $base"_1.sai" $base"_2.sai" $FASTQDIR/$base"_1.trim.fq" $FASTQDIR/$base"_2.trim.fq"
+ if [ ! -f aln_out/$base.sam ]; then
+  bwa sampe -f aln_out/$base.sam $GENOMEFILE aln_out/$base"_1.sai" aln_out/$base"_2.sai" $FASTQDIR/$base"_1.trim.fq" $FASTQDIR/$base"_2.trim.fq"
  fi
 done
 
-for file in *.sam
+for file in aln_out/*.sam
 do
  base=`basename $file .sam`
- if [ ! -f $base.bam ]; 
+ if [ ! -f aln_out/$base.bam ]; 
  then
   samtools view -bS $file > $base.unsrt.bam
-  samtools sort $base.unsrt.bam $base.bam
+  samtools sort $base.unsrt.bam aln_out/$base.bam
   rm $base.unsrt.bam
  fi
 done
