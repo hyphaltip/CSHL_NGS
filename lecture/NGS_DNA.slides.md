@@ -301,6 +301,10 @@ BWA‐SW can also be used to align ~100bp reads, but it is slower than
     2%. This is the trade‐off of the 30X speed up in comparison to
     SSAHA2’s ‐454 mode.
 
+When running BWA you will also need to choose an appropriate indexing
+method - read the manual. This applies when your genome is very large
+with long chromosomes.
+
 ---
 #Colorspace alignment
 
@@ -341,9 +345,12 @@ BWA‐SW can also be used to align ~100bp reads, but it is slower than
 ---
 #Using BWA,SAMtools
 
+    # index genome before we can align (only need to do this once)
+    $ bwa index Saccharomyces
     # -t # of threads
     # -q quality trimming
     # -f output file
+    # for each set of FASTQ files you want to process these are steps
     $ bwa aln -q 20 -t 16 -f SRR567756_1.sai Saccharomyces SRR567756_1.fastq
     $ bwa aln -q 20 -t 16 -f SRR567756_2.sai Saccharomyces SRR567756_2.fastq
     # do Paired-End alignment and create SAM file
@@ -356,9 +363,18 @@ BWA‐SW can also be used to align ~100bp reads, but it is slower than
     # build index
     $ samtools index SRR567756.bam
 
-#Using Picard tools
+---
+#BAM using Picard tools
+
+Can convert and sort all in one go with Picard
+
+    $ java -jar SortSam.jar IN=SRR567756.sam OUT=SRR567756.bam SORT_ORDER=coordinate
+
+Lots of other resources for SAM/BAM manipulation in Picard documentation on the web [http://picard.sourceforge.net/command-line-overview.shtml](http://picard.sourceforge.net/command-line-overview.shtml).
 
 
+---
+#
     $ samtools view -h SRR527547.realign.W303.bam
     samtools view -h SRR527547.realign.W303.bam | more
     @HD	VN:1.0	GO:none	SO:coordinate
@@ -394,6 +410,23 @@ BWA‐SW can also be used to align ~100bp reads, but it is slower than
 ![SAM Table](images/SAMFormatTable.png "SAM 11 columns")
 
 ---
+#Read Groups
+
+One component of SAM files is the idea of processing multiple files, but that these track back to specific samples or replicates. 
+
+This can be coded in the header of the SAM file
+
+    @RG ID:Strain124 PL:Illumina PU:Genomic LB:Strain124 CN:Broad
+
+It can also be encoded on a per-read basis so that multiple SAM files
+can be combined together into a single SAM file and that the origin of
+the reads can still be preserved. This is really useful when you want
+to call SNPs across multiple samples.
+
+The AddOrReplaceReadGroups.jar command set in Picard is really useful
+for manipulating these.
+
+---
 #samtools flagstat
 
     4505078 + 0 in total (QC-passed reads + QC-failed reads)
@@ -411,13 +444,67 @@ BWA‐SW can also be used to align ~100bp reads, but it is slower than
 ---
 #SAMtools and VCFtools to call SNPs
 
+   samtools mpileup -D -S -gu -f genome/Saccharomyces_cerevisiae.fa ABC.bam | bcftools view -bvcg - > ABC.raw.bcf
+   bcftools view ABC.raw.bcf | vcfutils.pl varFilter -D100 > ABC.filter.vcf
    
 ---
+#VCF Files
+
+   Variant Call Format - A standardized format for representing variations.  Tab delimited but with specific ways to encode more information in each column.
+
+  A useful tool to JUST get SNPs back out from a VCF file is vcf-to-tab (part of vcftools).
+
+   #CHROM	POS	ID	REF	ALT	QUAL	FILTER	INFO	FORMAT	SRR527545
+   chrI	141	.	C	T	47.01	.	AC=1;AF=0.500;AN=2;BaseQRankSum=-0.203;DP=23;Dels=0.00;FS=5.679;HaplotypeScore=3.4127;MLEAC=1;MLEAF=0.500;MQ=53.10;MQ0=0;MQRankSum=-2.474;QD=2.04;ReadPosRankSum=-0.771;SB=-2.201e+01	GT:AD:DP:GQ:PL	0/1:19,4:23:77:77,0,565
+   chrI	286	.	A	T	47.01	.	AC=1;AF=0.500;AN=2;BaseQRankSum=-0.883;DP=35;Dels=0.00;FS=5.7
+50;HaplotypeScore=0.0000;MLEAC=1;MLEAF=0.500;MQ=46.14;MQ0=0;MQRankSum=-5.017;QD=1.34;ReadPosRankSum=-0.950;SB=-6.519e-03	GT:AD:DP:GQ:PL	0/1:20,15:35:77:77,0,713
+   chrI	305	.	C	G	30.01	.	AC=1;AF=0.500;AN=2;BaseQRankSum=-0.086;DP=46;Dels=0.00;FS=0.000;HaplotypeScore=0.9998;MLEAC=1;MLEAF=0.500;MQ=49.74;MQ0=1;MQRankSum=-5.308;QD=0.65;ReadPosRankSum=3.101;SB=-6.519e-03	GT:AD:DP:GQ:PL	0/1:31,15:46:60:60,0,1049
+   chrI	384	.	C	T	32.01	.	AC=1;AF=0.500;AN=2;BaseQRankSum=0.518;DP=39;Dels=0.00;FS=17.6
+78;HaplotypeScore=10.8991;MLEAC=1;MLEAF=0.500;MQ=52.06;MQ0=1;MQRankSum=-3.066;QD=0.82;ReadPosRankSum=-2.159;SB=-6.519e-03	GT:AD:DP:GQ:PL	0/1:34,5:39:62:62,0,1087
+
+   #CHROM	POS	REF	SRR527545
+   chrI	141	C	C/T
+   chrI	286	A	A/T
+   chrI	305	C	C/G
+   chrI	384	C	C/T
+   chrI	396	C	C/G
+   chrI	476	G	G/T
+   chrI	485	T	T/C
+   chrI	509	G	G/A
+   chrI	537	T	T/C
+   chrI	610	G	G/A
+   chrI	627	C	C/T
+---
 #GATK to call SNPs
+
+    # run GATK with 4 threads (-nt)
+    # call SNPs only (-glm, would specific INDEL for Indels or can ask for BOTH)
+    $ java -jar GenomeAnalysisTKLite.jar -T UnifiedGenotyper -glm SNP -I SRR527545.bam -R genome/Saccharomyces_cerevisiae.fa -o SRR527545.GATK.vcf -nt 4
 
 ---
 #GATK to call INDELs
 
+    # run GATK with 4 threads (-nt)
+    # call SNPs only (-glm, would specific INDEL for Indels or can ask for BOTH)
+    $ java -jar GenomeAnalysisTKLite.jar -T UnifiedGenotyper -glm INDEL -I SRR527545.bam -R genome/Saccharomyces_cerevisiae.fa -o SRR527545.GATK_INDEL.vcf -nt 4
+
 ---
 #VCFtools to evaluate and manipulate
 
+   $ vcftools --vcf SRR527545.GATK.vcf --diff SRR527545.filter.vcf
+   N_combined_individuals:	1
+   N_individuals_common_to_both_files:	1
+   N_individuals_unique_to_file1:	0
+   N_individuals_unique_to_file2:	0
+   Comparing sites in VCF files...
+   Non-matching REF at chrI:126880 C/CTTTTTTTTTTTTTTT. Diff results may be unreliable.
+   Non-matching REF at chrI:206129 A/AAC. Diff results may be unreliable.
+   Non-matching REF at chrIV:164943 C/CTTTTTTTTTTTT. Diff results may be unreliable.
+   Non-matching REF at chrIV:390546 A/ATTGTTGTTGTTGT. Diff results may be unreliable.
+   Non-matching REF at chrXII:196750 A/ATTTTTTTTTTTTTTT. Diff results may be unreliable.
+   Found 8604 SNPs common to both files.
+   Found 1281 SNPs only in main file.
+   Found 968 SNPs only in second file.
+
+   # calculate Tajima's D in binsizes of 1000 bp [if you have multiple individuals]
+   $ vcftools --vcf Sacch_strains.vcf --TajimaD 1000 
