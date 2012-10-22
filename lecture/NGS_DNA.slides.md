@@ -442,6 +442,26 @@ for manipulating these.
     6069 + 0 with mate mapped to a different chr (mapQ>=5)
 
 ---
+#Realigning around Indels and SNPs
+
+To insure high quality Indelcalls, the reads need to realigned after placed by BWA or other aligner. This can be done with PicardTools and GATK.
+
+Need to Deduplicate reads
+
+    $ java -jar picard-tools/MarkDuplicates.jar INPUT=STRAIN.sorted.bam OUTPUT=STRAIN.dedup.bam 
+    METRICS_FILE=STRAIN.dedup.metrics CREATE_INDEX=true VALIDATION_STRINGENCY=SILENT;
+
+Then identify Intervals around variants
+
+    $ java -jar GATK/GenomeAnalysisTK.jar -T RealignerTargetCreator -R genome/Saccharomyces_cerevisiae.fa \
+     -o STRAIN.intervals -I STRAIN.dedup.bam;
+
+Then realign based on these intervals
+
+    $ java -jar GATK/GenomeAnalysisTK.jar -T IndelRealigner -R genome/Saccharomyces_cerevisiae.fa \
+     -targetIntervalsSTRAIN.intervals -I STRAIN.dedup.bam -o STRAIN.realign.bam
+
+---
 #SAMtools and VCFtools to call SNPs
 
    samtools mpileup -D -S -gu -f genome/Saccharomyces_cerevisiae.fa ABC.bam | bcftools view -bvcg - > ABC.raw.bcf
