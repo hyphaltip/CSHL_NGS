@@ -374,7 +374,8 @@ Lots of other resources for SAM/BAM manipulation in Picard documentation on the 
 
 
 ---
-#
+#View header from BAM file
+
     $ samtools view -h SRR527547.realign.W303.bam
     samtools view -h SRR527547.realign.W303.bam | more
     @HD	VN:1.0	GO:none	SO:coordinate
@@ -464,8 +465,8 @@ Then realign based on these intervals
 ---
 #SAMtools and VCFtools to call SNPs
 
-   samtools mpileup -D -S -gu -f genome/Saccharomyces_cerevisiae.fa ABC.bam | bcftools view -bvcg - > ABC.raw.bcf
-   bcftools view ABC.raw.bcf | vcfutils.pl varFilter -D100 > ABC.filter.vcf
+    $ samtools mpileup -D -S -gu -f genome/Saccharomyces_cerevisiae.fa ABC.bam | bcftools view -bvcg - > ABC.raw.bcf
+    bcftools view ABC.raw.bcf | vcfutils.pl varFilter -D100 > ABC.filter.vcf
 
 ---
 #GATK to call SNPs
@@ -572,7 +573,7 @@ A useful tool to JUST get SNPs back out from a VCF file is vcf-to-tab (part of v
 ---
 #Can compare strains in other ways
 
-PCA plot of strains from the SNPs converted to 0,1,2 for homozygous Ref, Homozygous Alt allele, or heterozygous
+PCA plot of strains from the SNPs converted to 0,1,2 for homozygous Ref, Homozygous Alt allele, or heterozygous (done in R)
 
 ![PCA_1](images/PCA_1.png)
 
@@ -588,3 +589,4 @@ PCA plot of strains from the SNPs converted to 0,1,2 for homozygous Ref, Homozyg
 * Alignment of reads with several tools possible, BWA outlined here
 * SAMTools and Picard to manipulate SAM/BAM files
 * Genotyping with SAMtools and GATK
+* Summarizing and manipulating VCF files with VCFtools
