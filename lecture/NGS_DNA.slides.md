@@ -22,8 +22,6 @@
 ---
 #Sequence data sources
 
-XXX - How much does IonTorrent cost and how dense?
-
 * Sanger
    * Long reads, high quality, expensive
 * Illumina
