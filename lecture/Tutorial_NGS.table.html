@@ -14,6 +14,16 @@
 <ol type="1">
 <li><p>Download Broad IGV viewer at <a href="http://www.broadinstitute.org/igv/">http://www.broadinstitute.org/igv/</a></p></li>
 <li><p>Download the Saccharomyces genome from <a href="http://downloads.yeastgenome.org/sequence/S288C_reference/genome_releases/S288C_reference_genome_R64-1-1_20110203.tgz">SGD site</a>. Uncompress this and get the .fsa file which is the genome. Copy it and run rename_seq.pl on it to fix the chromosome names so they match the GFF file: https://github.com/hyphaltip/CSHL_2012_NGS/blob/master/data/rename_seq.pl</p></li>
+</ol>
+<ul>
+<li>You may need to fix this GFF file so it doesn't have any sequence</li>
+<li>Do a grep to find where the '&gt;' lines are where the sequence as fasta is in there and find the first one</li>
+<li>grep -n &quot;&gt;&quot; saccharomyces_cerevisiae_R64-1-1_20110208.gff</li>
+<li>read in the first N lines using head</li>
+<li>head -n 16425 saccharomyces_cerevisiae_R64-1-1_20110208.gff &gt; saccharomyces_cerevisiae_R64-1-1_20110208.noseq.gff</li>
+<li>Use this saccharomyces_cerevisiae_R64-1-1_20110208.noseq.gff for GFF file later needs.</li>
+</ul>
+<ol start="3" type="1">
 <li><p>Downlod the read data from SRA and convert it -- This step already done for you, folder is on server or you can run the download script when you get home (rerequires <a href="http://curl.haxx.se/">curl</a>, <a href="http://ftp-private.ncbi.nlm.nih.gov/sra/sdk/">sra toolkit</a>, and for download speedup <a href="http://downloads.asperasoft.com/download_connect/">Aspera client</a></p>
 <ul>
 <li><p>For Asperga, get the web client and find the ascp binary and install in your path. For example on OSX it installs in &quot;/Applications/Aspera Connect.app/Contents/Resources/ascp&quot;.</p></li>
@@ -33,6 +43,7 @@
 <li><p>Run Filtering steps on GATK output SNPs to remove potential biased or low-quality ones</p></li>
 <li><p>Calculate the total number of remaining SNPs.</p></li>
 <li><p>For advanced users, intersect this list of SNPs (in the VCF file) with the GFF for the genome to determine which SNPs are in coding regions. Read up on <a href="http://code.google.com/p/bedtools/">BEDTools</a>. The genome annotatio in GFF is available in the folder where the genome was downloaded from <a href="http://yeastgenome.org">SGD</a>.</p></li>
+<li><p>Open the genome file for Saccharomces in IGV. Then add the GFF file as annotation track. Then BAM file, and VCF file in IGV to vi</p></li>
 </ol>
 <p>Feel free to try this also with your own favorite organism. Many datasets exist in the SRA from genome resequencing. To extend the problem, ddownload more than 4 strains so you can apply comparisons between individuals instead of just between one individual and the reference.</p>
 </body>
