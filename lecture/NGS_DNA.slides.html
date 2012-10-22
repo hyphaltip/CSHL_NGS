@@ -2543,7 +2543,8 @@ $ samtools index SRR567756.bam
             
             
             <section><p>Can convert and sort all in one go with Picard</p>
-<pre><code>$ java -Xmx3gb -jar SortSam.jar IN=SRR567756.sam OUT=SRR567756.bam SORT_ORDER=coordinate VALIDATION_STRINGENCY=SILENT
+<pre><code>$ java -Xmx3gb -jar SortSam.jar IN=SRR567756.sam OUT=SRR567756.bam \
+ SORT_ORDER=coordinate VALIDATION_STRINGENCY=SILENT
 </code></pre>
 <p>Lots of other resources for SAM/BAM manipulation in Picard documentation on the web <a href="http://picard.sourceforge.net/command-line-overview.shtml">http://picard.sourceforge.net/command-line-overview.shtml</a>.</p></section>
             
@@ -2822,8 +2823,9 @@ $ bcftools view ABC.raw.bcf | vcfutils.pl varFilter -D100 &gt; ABC.filter.vcf
             
             <section><pre><code># run GATK with 4 threads (-nt)
 # call SNPs only (-glm, would specific INDEL for Indels or can ask for BOTH)
-$ java -Xmx3gb -jar GenomeAnalysisTKLite.jar -T UnifiedGenotyper -glm SNP -I SRR527545.bam \
- -R genome/Saccharomyces_cerevisiae.fa -o SRR527545.GATK.vcf -nt 4
+$ java -Xmx3gb -jar GenomeAnalysisTKLite.jar -T UnifiedGenotyper \
+  -glm SNP -I SRR527545.bam -R genome/Saccharomyces_cerevisiae.fa \
+  -o SRR527545.GATK.vcf -nt 4
 </code></pre></section>
             
           </div>

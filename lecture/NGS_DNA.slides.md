@@ -371,7 +371,8 @@ with long chromosomes.
 
 Can convert and sort all in one go with Picard
 
-    $ java -Xmx3gb -jar SortSam.jar IN=SRR567756.sam OUT=SRR567756.bam SORT_ORDER=coordinate VALIDATION_STRINGENCY=SILENT
+    $ java -Xmx3gb -jar SortSam.jar IN=SRR567756.sam OUT=SRR567756.bam \
+     SORT_ORDER=coordinate VALIDATION_STRINGENCY=SILENT
 
 Lots of other resources for SAM/BAM manipulation in Picard documentation on the web [http://picard.sourceforge.net/command-line-overview.shtml](http://picard.sourceforge.net/command-line-overview.shtml).
 
@@ -480,8 +481,9 @@ Then realign based on these intervals
 
     # run GATK with 4 threads (-nt)
     # call SNPs only (-glm, would specific INDEL for Indels or can ask for BOTH)
-    $ java -Xmx3gb -jar GenomeAnalysisTKLite.jar -T UnifiedGenotyper -glm SNP -I SRR527545.bam \
-     -R genome/Saccharomyces_cerevisiae.fa -o SRR527545.GATK.vcf -nt 4
+    $ java -Xmx3gb -jar GenomeAnalysisTKLite.jar -T UnifiedGenotyper \
+      -glm SNP -I SRR527545.bam -R genome/Saccharomyces_cerevisiae.fa \
+      -o SRR527545.GATK.vcf -nt 4
 
 ---
 #GATK to call INDELs
