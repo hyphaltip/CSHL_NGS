@@ -371,7 +371,7 @@ with long chromosomes.
 
 Can convert and sort all in one go with Picard
 
-    $ java -jar SortSam.jar IN=SRR567756.sam OUT=SRR567756.bam SORT_ORDER=coordinate VALIDATION_STRINGENCY=SILENT
+    $ java -Xmx3gb -jar SortSam.jar IN=SRR567756.sam OUT=SRR567756.bam SORT_ORDER=coordinate VALIDATION_STRINGENCY=SILENT
 
 Lots of other resources for SAM/BAM manipulation in Picard documentation on the web [http://picard.sourceforge.net/command-line-overview.shtml](http://picard.sourceforge.net/command-line-overview.shtml).
 
@@ -452,19 +452,19 @@ To insure high quality Indelcalls, the reads need to realigned after placed by B
 
 Need to Deduplicate reads
 
-    $ java -jar picard-tools/MarkDuplicates.jar INPUT=STRAIN.sorted.bam \
+    $ java -Xmx3gb -jar picard-tools/MarkDuplicates.jar INPUT=STRAIN.sorted.bam \
       OUTPUT=STRAIN.dedup.bam METRICS_FILE=STRAIN.dedup.metrics \
       CREATE_INDEX=true VALIDATION_STRINGENCY=SILENT
 
 Then identify Intervals around variants
 
-    $ java -jar GATK/GenomeAnalysisTK.jar -T RealignerTargetCreator \
+    $ java -Xmx3gb -jar GATK/GenomeAnalysisTK.jar -T RealignerTargetCreator \
      -R genome/Saccharomyces_cerevisiae.fa \
      -o STRAIN.intervals -I STRAIN.dedup.bam
 
 Then realign based on these intervals
 
-    $ java -jar GATK/GenomeAnalysisTK.jar -T IndelRealigner \
+    $ java -Xmx3gb -jar GATK/GenomeAnalysisTK.jar -T IndelRealigner \
      -R genome/Saccharomyces_cerevisiae.fa \
      -targetIntervalsSTRAIN.intervals -I STRAIN.dedup.bam -o STRAIN.realign.bam
 
@@ -480,7 +480,7 @@ Then realign based on these intervals
 
     # run GATK with 4 threads (-nt)
     # call SNPs only (-glm, would specific INDEL for Indels or can ask for BOTH)
-    $ java -jar GenomeAnalysisTKLite.jar -T UnifiedGenotyper -glm SNP -I SRR527545.bam \
+    $ java -Xmx3gb -jar GenomeAnalysisTKLite.jar -T UnifiedGenotyper -glm SNP -I SRR527545.bam \
      -R genome/Saccharomyces_cerevisiae.fa -o SRR527545.GATK.vcf -nt 4
 
 ---
