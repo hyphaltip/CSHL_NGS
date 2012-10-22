@@ -12,6 +12,13 @@ Preparation Steps
 site](http://downloads.yeastgenome.org/sequence/S288C_reference/genome_releases/S288C_reference_genome_R64-1-1_20110203.tgz). Uncompress this and get the .fsa file which is the genome. Copy it and run rename_seq.pl on it to fix the chromosome names so they match the GFF file:
  https://github.com/hyphaltip/CSHL_2012_NGS/blob/master/data/rename_seq.pl
 
+ - You may need to fix this GFF file so it doesn't have any sequence
+ - Do a grep to find where the '>' lines are where the sequence as fasta is in there and find the first one
+ - grep -n ">" saccharomyces_cerevisiae_R64-1-1_20110208.gff
+ - read in the first N lines using head
+ - head -n 16425 saccharomyces_cerevisiae_R64-1-1_20110208.gff > saccharomyces_cerevisiae_R64-1-1_20110208.noseq.gff
+ - Use this saccharomyces_cerevisiae_R64-1-1_20110208.noseq.gff for GFF file later needs.
+
 3. Downlod the read data from SRA and convert it -- This step already
 done for you, folder is on server or you can run the download script
 when you get home (rerequires [curl](http://curl.haxx.se/), [sra
@@ -50,6 +57,7 @@ regions.  Read up on
 [BEDTools](http://code.google.com/p/bedtools/). The genome annotatio in GFF is available
 in the folder where the genome was downloaded from [SGD](http://yeastgenome.org).
 
+9. Open the genome file for Saccharomces in IGV.  Then add the GFF file as annotation track. Then BAM file, and VCF file in IGV to vi
 
 Feel free to try this also with your own favorite organism. Many
 datasets exist in the SRA from genome resequencing. To extend the
