@@ -59,7 +59,7 @@ Tutorial
 
 ```fastqc -h``` to get help
 
-3. Align reads to the genome using BWA. This requires you to also build and index for the genome
+3. Align reads to the genome using BWA. This requires you to also build and index for the genome. See the [lecture notes](http://hyphaltip.github.com/CSHL_2012_NGS/lecture/NGS_DNA.slides.html#slide34).
 
 4. Realign reads with Picard and GATK [based on lecture](http://hyphaltip.github.com/CSHL_2012_NGS/lecture/NGS_DNA.slides.html#slide40).
 
