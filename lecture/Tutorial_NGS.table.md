@@ -61,6 +61,8 @@ Tutorial
 
 3. Align reads to the genome using BWA. This requires you to also build and index for the genome. See the [lecture notes](http://hyphaltip.github.com/CSHL_2012_NGS/lecture/NGS_DNA.slides.html#slide34).
 
+3. Fix the Read groups see [this slide](http://hyphaltip.github.com/CSHL_2012_NGS/lecture/NGS_DNA.slides.html#slide51)
+
 4. Realign reads with Picard and GATK [based on lecture](http://hyphaltip.github.com/CSHL_2012_NGS/lecture/NGS_DNA.slides.html#slide40).
 
 1. Call SNPs with SAMTools - refer to the SAMtools manpage on mpileup for more details. [http://samtools.sourceforge.net/](http://samtools.sourceforge.net/)
@@ -83,5 +85,5 @@ Feel free to try this also with your own favorite organism. Many
 datasets exist in the [SRA](http://www.ncbi.nlm.nih.gov/sra) from genome resequencing. To extend the
 problem, ddownload more than 4 strains so you can apply comparisons between individuals instead of just between one individual and the reference.
 
-For example, here is the [(Drosophila reference panel)[http://www.ncbi.nlm.nih.gov/bioproject/36679] which included sequencing 192 individuals. Or find something smaller (10 C.elegans for example).
+For example, here is the [Drosophila reference panel](http://www.ncbi.nlm.nih.gov/bioproject/36679) which included sequencing 192 individuals. Or find something smaller (10 C.elegans for example).
 
