@@ -23,23 +23,27 @@
 #Sequence data sources
 
 * Sanger
-   * Long reads, high quality, expensive
+    * Long reads, high quality, expensive
 * Illumina
-   * Short reads 50-150bp (HiSeq) and up to 250bp (MiSeq)
-   * Cheap and Dense read total (HiSeq 200-300M paired-reads for ~$2k)
+    * Short reads 50-150bp (HiSeq) and up to 250bp (MiSeq)
+    * Cheap and Dense read total (HiSeq 200-300M paired-reads for ~$2k)
 * 454
-   * Longish reads 300-500 bp, some homopolymer seq problems,
-   * Expensive ($10k for 1M reads), recent chemistry problems
+    * Longish reads 300-500 bp, some homopolymer seq problems,
+    * Expensive ($10k for 1M reads), recent chemistry problems
 * PacBio
-   * Long reads, but small amount (10k)
-   * Low seq quality and not cheap
-   * Can help augement assemblies, but not good enough on its own
+    * Long reads, but small amount (10k)
+    * Low seq quality and not cheap
+    * Can help augement assemblies, but not good enough on its own
+
+---
+#Sequence data source (cont)
+
 * SOLiD
-   * Short reads, 30-50bp. Reasonably price-point for the density
-   * 1/5 as many reads as Illumina HiSeq
+    * Short reads, 30-50bp. Reasonably price-point for the density
+    * 1/5 as many reads as Illumina HiSeq
 * Ion Torrent
-   * Cheaper machine, fast, 100bp reads and reported 100M
-   * Quality okay for some applications
+    * Cheaper machine, fast, 100bp reads and reported 100M
+    * Quality okay for some applications
 
 ---
 #Sequencer comparisons
