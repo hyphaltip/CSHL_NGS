@@ -600,3 +600,15 @@ PCA plot of strains from the SNPs converted to 0,1,2 for homozygous Ref, Homozyg
 * SAMTools and Picard to manipulate SAM/BAM files
 * Genotyping with SAMtools and GATK
 * Summarizing and manipulating VCF files with VCFtools
+
+
+---
+#Fixing Read-Groups
+
+I am using W303 since it is the strain name for this sequencing record.
+
+    $ java -Xmx3gb -jar $PICARD/AddOrReplaceReadGroups.jar INPUT=SRR527545.bam \
+      OUTPUT=SRR527545.readgroup.bam SORT_ORDER=coordinate CREATE_INDEX=True \
+      RGID=W303 RGLB=SRR527545 RGPL=Illumina RGPU=Genomic RGSM=W303 \
+      VALIDATION_STRINGENCY=SILENT
+
