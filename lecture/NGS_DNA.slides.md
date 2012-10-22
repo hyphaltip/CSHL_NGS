@@ -446,65 +446,125 @@ for manipulating these.
 
    samtools mpileup -D -S -gu -f genome/Saccharomyces_cerevisiae.fa ABC.bam | bcftools view -bvcg - > ABC.raw.bcf
    bcftools view ABC.raw.bcf | vcfutils.pl varFilter -D100 > ABC.filter.vcf
-   
----
-#VCF Files
 
-   Variant Call Format - A standardized format for representing variations.  Tab delimited but with specific ways to encode more information in each column.
-
-  A useful tool to JUST get SNPs back out from a VCF file is vcf-to-tab (part of vcftools).
-
-   #CHROM	POS	ID	REF	ALT	QUAL	FILTER	INFO	FORMAT	SRR527545
-   chrI	141	.	C	T	47.01	.	AC=1;AF=0.500;AN=2;BaseQRankSum=-0.203;DP=23;Dels=0.00;FS=5.679;HaplotypeScore=3.4127;MLEAC=1;MLEAF=0.500;MQ=53.10;MQ0=0;MQRankSum=-2.474;QD=2.04;ReadPosRankSum=-0.771;SB=-2.201e+01	GT:AD:DP:GQ:PL	0/1:19,4:23:77:77,0,565
-   chrI	286	.	A	T	47.01	.	AC=1;AF=0.500;AN=2;BaseQRankSum=-0.883;DP=35;Dels=0.00;FS=5.7
-50;HaplotypeScore=0.0000;MLEAC=1;MLEAF=0.500;MQ=46.14;MQ0=0;MQRankSum=-5.017;QD=1.34;ReadPosRankSum=-0.950;SB=-6.519e-03	GT:AD:DP:GQ:PL	0/1:20,15:35:77:77,0,713
-   chrI	305	.	C	G	30.01	.	AC=1;AF=0.500;AN=2;BaseQRankSum=-0.086;DP=46;Dels=0.00;FS=0.000;HaplotypeScore=0.9998;MLEAC=1;MLEAF=0.500;MQ=49.74;MQ0=1;MQRankSum=-5.308;QD=0.65;ReadPosRankSum=3.101;SB=-6.519e-03	GT:AD:DP:GQ:PL	0/1:31,15:46:60:60,0,1049
-   chrI	384	.	C	T	32.01	.	AC=1;AF=0.500;AN=2;BaseQRankSum=0.518;DP=39;Dels=0.00;FS=17.6
-78;HaplotypeScore=10.8991;MLEAC=1;MLEAF=0.500;MQ=52.06;MQ0=1;MQRankSum=-3.066;QD=0.82;ReadPosRankSum=-2.159;SB=-6.519e-03	GT:AD:DP:GQ:PL	0/1:34,5:39:62:62,0,1087
-
-   #CHROM	POS	REF	SRR527545
-   chrI	141	C	C/T
-   chrI	286	A	A/T
-   chrI	305	C	C/G
-   chrI	384	C	C/T
-   chrI	396	C	C/G
-   chrI	476	G	G/T
-   chrI	485	T	T/C
-   chrI	509	G	G/A
-   chrI	537	T	T/C
-   chrI	610	G	G/A
-   chrI	627	C	C/T
 ---
 #GATK to call SNPs
 
     # run GATK with 4 threads (-nt)
     # call SNPs only (-glm, would specific INDEL for Indels or can ask for BOTH)
-    $ java -jar GenomeAnalysisTKLite.jar -T UnifiedGenotyper -glm SNP -I SRR527545.bam -R genome/Saccharomyces_cerevisiae.fa -o SRR527545.GATK.vcf -nt 4
+    $ java -jar GenomeAnalysisTKLite.jar -T UnifiedGenotyper -glm SNP -I SRR527545.bam \
+     -R genome/Saccharomyces_cerevisiae.fa -o SRR527545.GATK.vcf -nt 4
 
 ---
 #GATK to call INDELs
 
     # run GATK with 4 threads (-nt)
     # call SNPs only (-glm, would specific INDEL for Indels or can ask for BOTH)
-    $ java -jar GenomeAnalysisTKLite.jar -T UnifiedGenotyper -glm INDEL -I SRR527545.bam -R genome/Saccharomyces_cerevisiae.fa -o SRR527545.GATK_INDEL.vcf -nt 4
+    $ java -jar GenomeAnalysisTKLite.jar -T UnifiedGenotyper -glm INDEL -I SRR527545.bam \
+     -R genome/Saccharomyces_cerevisiae.fa -o SRR527545.GATK_INDEL.vcf -nt 4
+   
+---
+#VCF Files
+
+   Variant Call Format - A standardized format for representing variations.  Tab delimited but with specific ways to encode more information in each column.
+ 
+    ##FORMAT=<ID=AD,Number=.,Type=Integer,Description="Allelic depths for the ref and alt alleles in the order listed">
+    ##FORMAT=<ID=DP,Number=1,Type=Integer,Description="Approximate read depth (reads with MQ=255 or with bad mates are filtered)">
+    ##FORMAT=<ID=GQ,Number=1,Type=Integer,Description="Genotype Quality">
+    ##FORMAT=<ID=GT,Number=1,Type=String,Description="Genotype">
+    ##FORMAT=<ID=PL,Number=G,Type=Integer,Description="Normalized, Phred-scaled likelihoods for genotypes as defined in the VCF specification">
+    ##INFO=<ID=AC,Number=A,Type=Integer,Description="Allele count in genotypes, for each ALT allele, in the same order as listed">
+    ##INFO=<ID=AF,Number=A,Type=Float,Description="Allele Frequency, for each ALT allele, in the same order as listed">
+
+    #CHROM	POS	ID	REF	ALT	QUAL	FILTER	INFO	FORMAT	SRR527545
+    chrI	141	.	C	T	47.01	.	AC=1;AF=0.500;AN=2;BaseQRankSum=-0.203;DP=23;Dels=0.00;
+    FS=5.679;HaplotypeScore=3.4127;MLEAC=1;MLEAF=0.500;MQ=53.10;MQ0=0;MQRankSum=-2.474;QD=2.04;ReadPosRankSum=-0.771;
+    SB=-2.201e+01	GT:AD:DP:GQ:PL	0/1:19,4:23:77:77,0,565
+
+    chrI	286	.	A	T	47.01	.	AC=1;AF=0.500;AN=2;BaseQRankSum=-0.883;DP=35;Dels=0.00;
+    FS=5.750;HaplotypeScore=0.0000;MLEAC=1;MLEAF=0.500;MQ=46.14;MQ0=0;MQRankSum=-5.017;QD=1.34;ReadPosRankSum=-0.950;
+    SB=-6.519e-03	GT:AD:DP:GQ:PL	0/1:20,15:35:77:77,0,713
+   
+---
+#Filtering Variants
+
+GATK best Practices [http://www.broadinstitute.org/gatk/guide/topic?name=best-practices](http://www.broadinstitute.org/gatk/guide/topic?name=best-practices) emphasizes need to filter variants after they have been called to removed biased regions. 
+
+These refer to many combinations of information. Mapping quality (MQ),
+Homopolymer run length (HRun), Quality Score of variant, strand bias
+(too many reads from only one strand), etc.
+
+    -T VariantFiltration -o STRAINS.filtered.vcf
+    --variant STRAINS.raw.vcf \
+    --clusterWindowSize 10  -filter "QD<8.0" -filterName QualByDepth \
+    -filter "MQ>=30.0" -filterName MapQual \
+    -filter "HRun>=4" -filterName HomopolymerRun \
+    -filter "QUAL<100" -filterName QScore \
+    -filter "MQ0>=10 && ((MQ0 / (1.0 * DP)) > 0.1)" -filterName MapQualRatio \
+    -filter "FS>60.0" -filterName FisherStrandBias \
+    -filter "HaplotypeScore > 13.0" -filterName HaplotypeScore \
+    -filter "MQRankSum < -12.5" -filterName MQRankSum  \
+    -filter "ReadPosRankSum < -8.0" -filterName ReadPosRankSum  >& output.filter.log
+
+---
+#VCFtools
+
+A useful tool to JUST get SNPs back out from a VCF file is vcf-to-tab (part of vcftools).
+   
+    $ vcf-to-tab < INPUT.vcf > OUTPUT.tab
+
+    #CHROM	POS	REF	SRR527545
+    chrI	141	C	C/T
+    chrI	286	A	A/T
+    chrI	305	C	C/G
+    chrI	384	C	C/T
+    chrI	396	C	C/G
+    chrI	476	G	G/T
+    chrI	485	T	T/C
+    chrI	509	G	G/A
+    chrI	537	T	T/C
+    chrI	610	G	G/A
+    chrI	627	C	C/T
+
+
 
 ---
 #VCFtools to evaluate and manipulate
 
-   $ vcftools --vcf SRR527545.GATK.vcf --diff SRR527545.filter.vcf
-   N_combined_individuals:	1
-   N_individuals_common_to_both_files:	1
-   N_individuals_unique_to_file1:	0
-   N_individuals_unique_to_file2:	0
-   Comparing sites in VCF files...
-   Non-matching REF at chrI:126880 C/CTTTTTTTTTTTTTTT. Diff results may be unreliable.
-   Non-matching REF at chrI:206129 A/AAC. Diff results may be unreliable.
-   Non-matching REF at chrIV:164943 C/CTTTTTTTTTTTT. Diff results may be unreliable.
-   Non-matching REF at chrIV:390546 A/ATTGTTGTTGTTGT. Diff results may be unreliable.
-   Non-matching REF at chrXII:196750 A/ATTTTTTTTTTTTTTT. Diff results may be unreliable.
-   Found 8604 SNPs common to both files.
-   Found 1281 SNPs only in main file.
-   Found 968 SNPs only in second file.
+    $ vcftools --vcf SRR527545.GATK.vcf --diff SRR527545.filter.vcf
+    N_combined_individuals:	1
+    N_individuals_common_to_both_files:	1
+    N_individuals_unique_to_file1:	0
+    N_individuals_unique_to_file2:	0
+    Comparing sites in VCF files...
+    Non-matching REF at chrI:126880 C/CTTTTTTTTTTTTTTT. Diff results may be unreliable.
+    Non-matching REF at chrI:206129 A/AAC. Diff results may be unreliable.
+    Non-matching REF at chrIV:164943 C/CTTTTTTTTTTTT. Diff results may be unreliable.
+    Non-matching REF at chrIV:390546 A/ATTGTTGTTGTTGT. Diff results may be unreliable.
+    Non-matching REF at chrXII:196750 A/ATTTTTTTTTTTTTTT. Diff results may be unreliable.
+    Found 8604 SNPs common to both files.
+    Found 1281 SNPs only in main file.
+    Found 968 SNPs only in second file.
 
-   # calculate Tajima's D in binsizes of 1000 bp [if you have multiple individuals]
-   $ vcftools --vcf Sacch_strains.vcf --TajimaD 1000 
+    # calculate Tajima's D in binsizes of 1000 bp [if you have multiple individuals]
+    $ vcftools --vcf Sacch_strains.vcf --TajimaD 1000 
+
+---
+#Can compare strains in other ways
+
+PCA plot of strains from the SNPs converted to 0,1,2 for homozygous Ref, Homozygous Alt allele, or heterozygous
+
+![PCA_1](images/PCA_1.png)
+
+---
+#Zoomed PCA plot
+
+![PCA_2](images/PCA_2.png)
+
+---
+#Summary
+
+* Reads should be trimmed, quality controlled before use. Preserving Paired-End info is important
+* Alignment of reads with several tools possible, BWA outlined here
+* SAMTools and Picard to manipulate SAM/BAM files
+* Genotyping with SAMtools and GATK
