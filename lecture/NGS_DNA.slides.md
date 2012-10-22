@@ -22,14 +22,13 @@
 ---
 #Sequence data sources
 
-XXX - How much does SOLiD cost and how dense?
 XXX - How much does IonTorrent cost and how dense?
 
 * Sanger
    * Long reads, high quality, expensive
 * Illumina
    * Short reads 50-150bp (HiSeq) and up to 250bp (MiSeq)
-   * Cheap and Dense read total (200-300M paired-reads for $2k)
+   * Cheap and Dense read total (HiSeq 200-300M paired-reads for ~$2k)
 * 454
    * Longish reads 300-500 bp, some homopolymer seq problems,
    * Expensive ($10k for 1M reads), recent chemistry problems
@@ -39,10 +38,16 @@ XXX - How much does IonTorrent cost and how dense?
    * Can help augement assemblies, but not good enough on its own
 * SOLiD
    * Short reads, 30-50bp. Reasonably price-point for the density
-   * Quality can be suspect, okay for some applications
+   * 1/5 as many reads as Illumina HiSeq
 * Ion Torrent
-   * Cheap, fast, medium output 
+   * Cheaper machine, fast, 100bp reads and reported 100M
    * Quality okay for some applications
+
+---
+#Sequencer comparisons
+Glenn TC, "Field guide to next-generation DNA sequencers" DOI:[10.1111/j.1755-0998.2011.03024.x](http://dx.doi.org/10.1111/j.1755-0998.2011.03024.x)
+
+![Seqcompare](images/sequencer_compare.png "Comparing sequencers")
 
 ---
 #File formats
@@ -130,11 +135,11 @@ requires additional memory to track these) and instead assume in same
 order in both files.
 
 Orientation of the reads depends on the library type. Whether they are 
- 
-    --> <-- 
-    --> --> 
 
-It depends on if it is Paired End or Mate-Pair library prepration protocol.
+ 
+    ---->   <----   Paired End (Forward Reverse)
+    <----   ---->   Mate Pair  (Reverse Forward)
+
 
 ---
 #Data QC
@@ -334,7 +339,25 @@ BWA‐SW can also be used to align ~100bp reads, but it is slower than
 * [BAMTools](https://github.com/pezmaster31/bamtools) C++ tools for BAM manipulation and statistics
 
 ---
-#Using samtools
+#Using BWA,SAMtools
+
+    # -t # of threads
+    # -q quality trimming
+    # -f output file
+    $ bwa aln -q 20 -t 16 -f SRR567756_1.sai Saccharomyces SRR567756_1.fastq
+    $ bwa aln -q 20 -t 16 -f SRR567756_2.sai Saccharomyces SRR567756_2.fastq
+    # do Paired-End alignment and create SAM file
+    $ bwa sampe -f SRR567756.sam Saccharomyces SRR567756_1.sai SRR567756_2.sai SRR567756_1.fastq SRR567756_2.fastq
+
+    # generate BAM file with samtools
+    $ samtools view -b -S SRR567756.sam > SRR567756.unsrt.bam
+    # will create SRR567756.bam which is sorted (by chrom position)
+    $ samtools sort SRR567756.unsrt.bam SRR567756
+    # build index
+    $ samtools index SRR567756.bam
+
+#Using Picard tools
+
 
     $ samtools view -h SRR527547.realign.W303.bam
     samtools view -h SRR527547.realign.W303.bam | more
@@ -388,6 +411,7 @@ BWA‐SW can also be used to align ~100bp reads, but it is slower than
 ---
 #SAMtools and VCFtools to call SNPs
 
+   
 ---
 #GATK to call SNPs
 
