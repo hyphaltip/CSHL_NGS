@@ -29,6 +29,7 @@ do
  if [ ! -f $SRADIR/$sracc.sra ]; then
   if [ -f $ASCP ] ;
   then
+   echo  $DLOAD anonftp@ftp-private.ncbi.nlm.nih.gov:$urlbase $SRADIR/$sraacc.sra
    $DLOAD anonftp@ftp-private.ncbi.nlm.nih.gov:$urlbase $SRADIR/$sraacc.sra
   else  
    curl -C - -o $SRADIR/$sraacc.sra http://ftp-private.ncbi.nlm.nih.gov$urlbase
