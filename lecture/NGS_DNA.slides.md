@@ -8,7 +8,7 @@
 
  twitter:[hyphaltip](http://twitter.com/hyphaltip) [stajichlab](http://twitter.com/stajichlab)
 
- Lecture available at [http://github.com/hyphaltip/CSHL_2012_NGS](http://github.com/hyphaltip/CSHL_2012_NGS)
+ Lecture available at [http://github.com/hyphaltip/CSHL_NGS](http://github.com/hyphaltip/CSHL_NGS)
 
 ---
 #NGS sequence data
@@ -383,8 +383,8 @@ Lots of other resources for SAM/BAM manipulation in Picard documentation on the 
     $ samtools view -h SRR527547.realign.W303.bam
     samtools view -h SRR527547.realign.W303.bam | more
     @HD	VN:1.0	GO:none	SO:coordinate
-    @SQ	SN:chrI	LN:230218	UR:file:/bigdata/jstajich/Teaching/CSHL_2012_NGS/examples/genome/Saccharomyces_cerevisiae.fa	M5:6681ac2f62509cfc220d78751b8dc524
-    @SQ	SN:chrII	LN:813184	UR:file:/bigdata/jstajich/Teaching/CSHL_2012_NGS/examples/genome/Saccharomyces_cerevisiae.fa	M5:97a317c689cbdd7e92a5c159acd290d2
+    @SQ	SN:chrI	LN:230218	UR:file:/bigdata/jstajich/Teaching/CSHL_NGS/examples/genome/Saccharomyces_cerevisiae.fa	M5:6681ac2f62509cfc220d78751b8dc524
+    @SQ	SN:chrII	LN:813184	UR:file:/bigdata/jstajich/Teaching/CSHL_NGS/examples/genome/Saccharomyces_cerevisiae.fa	M5:97a317c689cbdd7e92a5c159acd290d2
 
 
     $ samtools view -bS SRR527547.sam > SRR527547.unsrt.bam
