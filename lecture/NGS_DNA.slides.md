@@ -30,10 +30,12 @@
 * 454
     * Longish reads 300-500 bp, some homopolymer seq problems,
     * Expensive ($10k for 1M reads), recent chemistry problems
+	* Going away in [3 years](http://www.bio-itworld.com/2013/10/16/six-years-after-acquisition-roche-quietly-shutters-454.html)
 * PacBio
     * Long reads, but small amount (10k)
     * Low seq quality and not cheap
-    * Can help augement assemblies, but not good enough on its own
+    * Can help improve assemblies, probably not sufficient for an
+      assembly alone (too expensive to get deep enough coverage)
 
 ---
 #Sequence data source (cont)
@@ -73,7 +75,7 @@ Colorspace (SOLiD) - CSFASTQ
     @0711.1 2_34_121_F3
     T11332321002210131011131332200002000120000200001000
     +
-    64;;9:;>+0*&:*.*1-.5($2$3&$570*$575&$9966$5835'665
+    64;;9:;>+0*&:*.*1-.5:$2$3&$570*$575&$9966$5835'665
 
 ---
 #Quality Scores in [FASTQ files](http://en.wikipedia.org/wiki/FASTQ_format) 
@@ -128,7 +130,7 @@ File: Project1_lane6_2_sequence.txt
 
 These files can be interleaved, several simple tools exist, see velvet
 package for shuffleSequences scripts which can interleave them for
-you.  
+you.
 
 Interleaved was requried for some assemblers, but now many support
 keeping them separate. However the order of the reads must be the same
@@ -147,8 +149,8 @@ Orientation of the reads depends on the library type. Whether they are
 #Data QC
 
 * Trimming
-    * FASTX_toolkit, sickle
-    * Adapative or hard cutoff
+    * Adaptive or a hard cutoff
+	* sickle, FASTX_toolkit, SeqPrep
 * Additional considerations for Paired-end data
 * Evaluating quality info with reports
 
@@ -257,8 +259,9 @@ Orientation of the reads depends on the library type. Whether they are
 
 Strategy requires faster searching than BLAST or FASTA
 approach. Some approaches have been developed to make this fast enough for Millions of sequences.
+* [maq](http://maq.sourceforge.net/) - one of the first aligners 
 * Burrows-Wheeler Transform is a speed up that is accomplished
-through a transformation of the data. Requires and indexing of the
+through a transformation of the data. Require indexing of the
 search database (typically the genome). BWA, Bowtie
 * ? LASTZ
 * ? BFAST
@@ -282,7 +285,11 @@ search database (typically the genome). BWA, Bowtie
     * SSAHA also useful, uses fair amount of memory
     * BFAST - also good for DNA, supports Bisulfide seq,color-space but more complicated to run
 * Longer reads (e.g. PacBio, 454, Sanger reads)
-    * BWA has a BWA-SW mode using does a Smith-Waterman to place reads. Can tolerate large indels much better than standard BWA algorithm but slower.
+    * BWA has A mode using does a Smith-Waterman to place
+      reads. Can tolerate large indels much better than standard BWA
+      algorithm but slower. BWA-MEM is the currently reccomended
+      mode - BWA-SW was the earlier implementation and may be more
+      tested, BWA-MEM is the successor.
     * LAST for long reads
 
 ---

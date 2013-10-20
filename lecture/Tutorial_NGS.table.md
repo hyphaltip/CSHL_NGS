@@ -1,4 +1,4 @@
-Data and scripts for this Tutorial and Lectures are available at [https://github.com/hyphaltip/CSHL_2012_NGS](https://github.com/hyphaltip/CSHL_2012_NGS).
+Data and scripts for this Tutorial and Lectures are available at [https://github.com/hyphaltip/CSHL_NGS](https://github.com/hyphaltip/CSHL_NGS).
 
 
 
@@ -9,7 +9,7 @@ Preparation Steps
 
 Using Git on the command line (or install Git for Mac)
 
-    $git clone git://github.com/hyphaltip/CSHL_2012_NGS.git
+    $ git clone git://github.com/hyphaltip/CSHL_NGS.git
  
 The rename_seq.pl and other tools are 
 
@@ -21,12 +21,14 @@ site](http://downloads.yeastgenome.org/sequence/S288C_reference/genome_releases/
 
 You could do this like
 
-    $ curl -O http://downloads.yeastgenome.org/sequence/S288C_reference/genome_releases/S288C_reference_genome_R64-1-1_20110203.tgz
-    $ tar zxf S288C_reference_genome_R64-1-1_20110203.tgz
+    $ curl -O
+	http://downloads.yeastgenome.org/sequence/S288C_reference/genome_releases/S288C_reference_genome_Current_Release.tgz
+	
+    $ tar zxf S288C_reference_genome_Current_Release.tgz
 
 Run this script to fix the chromosome names in the download file so the will match the GFF file.
 
-    perl CSHL_2012_NSG/data/rename_seq.pl S288C_reference_genome_R64-1-1_20110203/S288C_reference_sequence_R64-1-1_20110203.fsa > Saccharomyces.fa
+    perl CSHL_NGS/data/rename_seq.pl S288C_reference_genome_R64-1-1_20110203/S288C_reference_sequence_R64-1-1_20110203.fsa > Saccharomyces.fa
 
   * You need to fix this GFF file so it doesn't have any sequence, to
     do this a grep to find where the '>' lines are where the sequence
@@ -41,14 +43,19 @@ Commands to run
 
   * Use this saccharomyces_cerevisiae_R64-1-1_20110208.noseq.gff for GFF file later needs.
 
-3. [NOT NEEDED FOR THIS TUTORIAL, DATA ARE ALREADY in ~/nextgen/fastq] Downlod the read data from SRA and convert it. You can run the download script (rerequires [curl](http://curl.haxx.se/), [sratoolkit](http://ftp-private.ncbi.nlm.nih.gov/sra/sdk/), and for download speedup [Aspera client](http://downloads.asperasoft.com/download_connect/)
+3. [NOT NEEDED FOR THIS TUTORIAL, DATA ARE ALREADY in ~/nextgen/fastq]
+   Downlod the read data from SRA and convert it. You can run the
+   download script(requires [curl](http://curl.haxx.se/),
+   [sratoolkit](http://ftp-private.ncbi.nlm.nih.gov/sra/sdk/), and for
+   download speedup
+   [Aspera client](http://downloads.asperasoft.com/download_connect/) )
 
     * For Aspera, get the web client and find the ascp binary and
-      put in your path (like ```~/bin```). For example on OSX it installs in
-      ```"/Applications/Aspera\ Connect.app/Contents/Resources/ascp"```. so you would copy this file to ```~/bin```
+      put in your path (like `~/bin`). For example on OSX it installs in
+      `"/Applications/Aspera\ Connect.app/Contents/Resources/ascp"`. so you would copy this file to `~/bin`
 
     * The download script to obtain all the data is here
-      [https://github.com/hyphaltip/CSHL_2012_NGS/blob/master/data/download.sh](https://github.com/hyphaltip/CSHL_2012_NGS/blob/master/data/download.sh) or in the github repo you checked out - ```CSHL_2012_NGS/data/download.sh```
+      [https://github.com/hyphaltip/CSHL_NGS/blob/master/data/download.sh](https://github.com/hyphaltip/CSHL_NGS/blob/master/data/download.sh) or in the github repo you checked out - ```CSHL_NGS/data/download.sh```
 
 Tutorial
 ========
@@ -59,17 +66,17 @@ Tutorial
 
 ```fastqc -h``` to get help
 
-3. Align reads to the genome using BWA. This requires you to also build and index for the genome. See the [lecture notes](http://hyphaltip.github.com/CSHL_2012_NGS/lecture/NGS_DNA.slides.html#slide34).
+3. Align reads to the genome using BWA. This requires you to also build and index for the genome. See the [lecture notes](http://hyphaltip.github.com/CSHL_NGS/lecture/NGS_DNA.slides.html#slide34).
 
-3. Fix the Read groups see [this slide](http://hyphaltip.github.com/CSHL_2012_NGS/lecture/NGS_DNA.slides.html#slide51)
+3. Fix the Read groups see [this slide](http://hyphaltip.github.com/CSHL_NGS/lecture/NGS_DNA.slides.html#slide51)
 
-4. Realign reads with Picard and GATK [based on lecture](http://hyphaltip.github.com/CSHL_2012_NGS/lecture/NGS_DNA.slides.html#slide40).
+4. Realign reads with Picard and GATK [based on lecture](http://hyphaltip.github.com/CSHL_NGS/lecture/NGS_DNA.slides.html#slide40).
 
 1. Call SNPs with SAMTools - refer to the SAMtools manpage on mpileup for more details. [http://samtools.sourceforge.net/](http://samtools.sourceforge.net/)
 
-1. Call SNPs with GATK, using [example from the lecture](http://hyphaltip.github.com/CSHL_2012_NGS/lecture/NGS_DNA.slides.html#slide42)
+1. Call SNPs with GATK, using [example from the lecture](http://hyphaltip.github.com/CSHL_NGS/lecture/NGS_DNA.slides.html#slide42)
 
-1. Run Filtering steps on GATK output SNPs to remove potential biased or low-quality ones using options [provided in lecture](http://hyphaltip.github.com/CSHL_2012_NGS/lecture/NGS_DNA.slides.html#slide45).
+1. Run Filtering steps on GATK output SNPs to remove potential biased or low-quality ones using options [provided in lecture](http://hyphaltip.github.com/CSHL_NGS/lecture/NGS_DNA.slides.html#slide45).
 
 1. Calculate the total number of remaining SNPs. Count the lines or use [vcftools](http://vcftools.sourceforge.net/).
 
@@ -82,8 +89,10 @@ in the folder where the genome was downloaded from [SGD](http://yeastgenome.org)
 9. Open the genome file for Saccharomces in IGV.  Then add the GFF file as annotation track. Then BAM file, and VCF file in IGV to view the SNPs in context of the gene annotation and the read-depth
 
 Feel free to try this also with your own favorite organism. Many
-datasets exist in the [SRA](http://www.ncbi.nlm.nih.gov/sra) from genome resequencing. To extend the
-problem, ddownload more than 4 strains so you can apply comparisons between individuals instead of just between one individual and the reference.
+datasets exist in the [SRA](http://www.ncbi.nlm.nih.gov/sra) from
+genome resequencing. To extend the problem, ddownload more than 4
+strains so you can apply comparisons between individuals instead of
+just between one individual and the reference.
 
 For example, here is the [Drosophila reference panel](http://www.ncbi.nlm.nih.gov/bioproject/36679) which included sequencing 192 individuals. Or find something smaller (10 C.elegans for example).
 

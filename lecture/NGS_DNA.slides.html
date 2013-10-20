@@ -1353,12 +1353,14 @@ div.slide div.presenter_notes {
 <li>454<ul>
 <li>Longish reads 300-500 bp, some homopolymer seq problems,</li>
 <li>Expensive ($10k for 1M reads), recent chemistry problems</li>
+<li>Going away in <a href="http://www.bio-itworld.com/2013/10/16/six-years-after-acquisition-roche-quietly-shutters-454.html">3 years</a></li>
 </ul>
 </li>
 <li>PacBio<ul>
 <li>Long reads, but small amount (10k)</li>
 <li>Low seq quality and not cheap</li>
-<li>Can help augement assemblies, but not good enough on its own</li>
+<li>Can help improve assemblies, probably not sufficient for an
+  assembly alone (too expensive to get deep enough coverage)</li>
 </ul>
 </li>
 </ul></section>
@@ -1478,7 +1480,7 @@ GTCGATGATGCCTGCTAAACTGCAGCTTGACGTACTGCGGACCCTGCAGTCCAGCGCTCGTCATGGAACGCAAACG
 <pre><code>@0711.1 2_34_121_F3
 T11332321002210131011131332200002000120000200001000
 +
-64;;9:;&gt;+0*&amp;:*.*1-.5($2$3&amp;$570*$575&amp;$9966$5835'665
+64;;9:;&gt;+0*&amp;:*.*1-.5:$2$3&amp;$570*$575&amp;$9966$5835'665
 </code></pre></section>
             
           </div>
@@ -1605,8 +1607,7 @@ CTGGCATTTTCACCCAAATTGCTTTTAACCCTTGGGATCGTGATTCACAA
             
             <section><p>These files can be interleaved, several simple tools exist, see velvet
 package for shuffleSequences scripts which can interleave them for
-you.<br />
-</p>
+you.</p>
 <p>Interleaved was requried for some assemblers, but now many support
 keeping them separate. However the order of the reads must be the same
 for the pairing to work since many tools ignore the IDs (since this
@@ -1647,8 +1648,8 @@ order in both files.</p>
             
             <section><ul>
 <li>Trimming<ul>
-<li>FASTX_toolkit, sickle</li>
-<li>Adapative or hard cutoff</li>
+<li>Adaptive or a hard cutoff</li>
+<li>sickle, FASTX_toolkit, SeqPrep</li>
 </ul>
 </li>
 <li>Additional considerations for Paired-end data</li>
@@ -2181,11 +2182,12 @@ order in both files.</p>
             
             <section><p>Strategy requires faster searching than BLAST or FASTA
 approach. Some approaches have been developed to make this fast enough for Millions of sequences.
-<em> Burrows-Wheeler Transform is a speed up that is accomplished
-through a transformation of the data. Requires and indexing of the
+<em> <a href="http://maq.sourceforge.net/">maq</a> - one of the first aligners 
+</em> Burrows-Wheeler Transform is a speed up that is accomplished
+through a transformation of the data. Require indexing of the
 search database (typically the genome). BWA, Bowtie
-</em> ? LASTZ
-* ? BFAST</p></section>
+<em> ? LASTZ
+</em> ? BFAST</p></section>
             
           </div>
           <div class="presenter_notes">
@@ -2261,7 +2263,11 @@ search database (typically the genome). BWA, Bowtie
 </ul>
 </li>
 <li>Longer reads (e.g. PacBio, 454, Sanger reads)<ul>
-<li>BWA has a BWA-SW mode using does a Smith-Waterman to place reads. Can tolerate large indels much better than standard BWA algorithm but slower.</li>
+<li>BWA has A mode using does a Smith-Waterman to place
+  reads. Can tolerate large indels much better than standard BWA
+  algorithm but slower. BWA-MEM is the currently reccomended
+  mode - BWA-SW was the earlier implementation and may be more
+  tested, BWA-MEM is the successor.</li>
 <li>LAST for long reads</li>
 </ul>
 </li>
