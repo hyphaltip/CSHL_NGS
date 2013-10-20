@@ -338,6 +338,10 @@ with long chromosomes.
     * e.g. give me the number of reads that overlap bases 3311 to 8006 on chr2
 
 ---
+#What are we trying to achieve?
+
+![IGV Reads](images/Igv_reads_SNPs.png "IGV reads")
+---
 #Manipulating SAM/BAM
 
 * [SAMtools](http://samtools.sf.net)
@@ -355,49 +359,66 @@ with long chromosomes.
 #Using BWA,SAMtools
 
     # index genome before we can align (only need to do this once)
-    $ bwa index Saccharomyces
+    $ bwa index genome/Saccharomyces.fa
     # -t # of threads
     # -q quality trimming
     # -f output file
     # for each set of FASTQ files you want to process these are steps
-    $ bwa aln -q 20 -t 16 -f SRR567756_1.sai Saccharomyces SRR567756_1.fastq
-    $ bwa aln -q 20 -t 16 -f SRR567756_2.sai Saccharomyces SRR567756_2.fastq
+    $ bwa aln -q 20 -t 16 -f W303_1.sai Saccharomyces W303_1.fastq
+    $ bwa aln -q 20 -t 16 -f W303_2.sai Saccharomyces W303_2.fastq
     # do Paired-End alignment and create SAM file
-    $ bwa sampe -f SRR567756.sam Saccharomyces SRR567756_1.sai SRR567756_2.sai \
-      SRR567756_1.fastq SRR567756_2.fastq
+    $ bwa sampe -f W303.sam genome/Saccharomyces.fa W303_1.sai W303_2.sai \
+      W303_1.fastq W303_2.fastq
 
     # generate BAM file with samtools
-    $ samtools view -b -S SRR567756.sam > SRR567756.unsrt.bam
-    # will create SRR567756.bam which is sorted (by chrom position)
-    $ samtools sort SRR567756.unsrt.bam SRR567756
+    $ samtools view -b -S W303.sam > W303.unsrt.bam
+    # will create W303.bam which is sorted (by chrom position)
+    $ samtools sort W303.unsrt.bam W303.sorted
     # build index
-    $ samtools index SRR567756.bam
+    $ samtools index W303.sorted.bam
+
+---
+#New BWA options
+
+Some recent improvements to bwa for 70-100bp reads is the `bwa mem`
+alignment algorithm. All in one step now to create the sam file.
+
+    $ bwa mem -t 32 -M genome/Saccharomyces.fa W303_1.fastq W303_2.fastq > W303.sam
+
+# can even use samtools an pipe it to bam on the fly
+    $ bwa mem -t 32 -M genome/Saccharomyces.fa W303_1.fastq \
+    W303_2.fastq |  samtools view -bS > W303.unsrt.bam
 
 ---
 #BAM using Picard tools
 
-Can convert and sort all in one go with Picard
+Can also convert and sort all in one go with Picard
 
-    $ java -Xmx3gb -jar SortSam.jar IN=SRR567756.sam OUT=SRR567756.bam \
-     SORT_ORDER=coordinate VALIDATION_STRINGENCY=SILENT
+    $ java -Xmx2g -jar SortSam.jar IN=W303.sam OUT=W303.sorted.bam \
+     SORT_ORDER=coordinate VALIDATION_STRINGENCY=SILENT CREATE_INDEX=true
+
+Or if you already created a bam file, but need to sort it, the input
+can also be a nam file
+
+    $ java -Xmx2g -jar SortSam.jar IN=W303.unsrt.bam OUT=W303.sorted.bam \
+     SORT_ORDER=coordinate VALIDATION_STRINGENCY=SILENT CREATE_INDEX=true
 
 Lots of other resources for SAM/BAM manipulation in Picard documentation on the web [http://picard.sourceforge.net/command-line-overview.shtml](http://picard.sourceforge.net/command-line-overview.shtml).
-
 
 ---
 #View header from BAM file
 
-    $ samtools view -h SRR527547.realign.W303.bam
-    samtools view -h SRR527547.realign.W303.bam | more
+    $ samtools view -h W303.sorted.bam
+    samtools view -h W303.sorted.bam | more
     @HD	VN:1.0	GO:none	SO:coordinate
-    @SQ	SN:chrI	LN:230218	UR:file:/bigdata/jstajich/Teaching/CSHL_NGS/examples/genome/Saccharomyces_cerevisiae.fa	M5:6681ac2f62509cfc220d78751b8dc524
-    @SQ	SN:chrII	LN:813184	UR:file:/bigdata/jstajich/Teaching/CSHL_NGS/examples/genome/Saccharomyces_cerevisiae.fa	M5:97a317c689cbdd7e92a5c159acd290d2
+    @SQ	SN:chrI	LN:230218	UR:file:genome/Saccharomyces.fa	M5:6681ac2f62509cfc220d78751b8dc524
+    @SQ	SN:chrII	LN:813184	UR:file:genome/Saccharomyces.fa	M5:97a317c689cbdd7e92a5c159acd290d2
 
 
-    $ samtools view -bS SRR527547.sam > SRR527547.unsrt.bam
-    $ samtools sort SRR527547.unsrt.bam SRR527547
-    # this will produce SRR527547.bam
-    $ samtools index SRR527547.bam
+    $ samtools view -bS W303.sam > W303.unsrt.bam
+    $ samtools sort W303.unsrt.bam W303.sorted
+    # this will produce W303.sorted.bam
+    $ samtools index W303.sorted.bam
     $ samtools view -h @SQ	SN:chrV	LN:576874
     @SQ	SN:chrVI	LN:270161
     @SQ	SN:chrVII	LN:1090940
@@ -456,30 +477,46 @@ for manipulating these.
 ---
 #Realigning around Indels and SNPs
 
-To insure high quality Indelcalls, the reads need to realigned after placed by BWA or other aligner. This can be done with PicardTools and GATK.
+To insure high quality Indelcalls, the reads need to realigned after
+placed by BWA or other aligner. This can be done with PicardTools and
+GATK. Note that `-jar` `GATK` and `picard-tools` folders need to refer to
+the whole path where they are located (unless are in your current directory)
 
 Need to Deduplicate reads
 
-    $ java -Xmx3gb -jar picard-tools/MarkDuplicates.jar INPUT=STRAIN.sorted.bam \
-      OUTPUT=STRAIN.dedup.bam METRICS_FILE=STRAIN.dedup.metrics \
+    $ java -Xmx3g -jar picard-tools/MarkDuplicates.jar INPUT=W303.sorted.bam \
+      OUTPUT=W303.dedup.bam METRICS_FILE=W303.dedup.metrics \
       CREATE_INDEX=true VALIDATION_STRINGENCY=SILENT
 
-Then identify Intervals around variants
+Fixing Read-Groups
 
-    $ java -Xmx3gb -jar GATK/GenomeAnalysisTK.jar -T RealignerTargetCreator \
-     -R genome/Saccharomyces_cerevisiae.fa \
-     -o STRAIN.intervals -I STRAIN.dedup.bam
+I am using W303 since it is the strain name for this sequencing
+record. We'd do this for each file RGLB would be processed as a bam
+file then later combine them. For now we will just treat it all like
+one sample
+
+    $ java -Xmx3g -jar $PICARD/AddOrReplaceReadGroups.jar INPUT=W303.dedup.bam \
+      OUTPUT=W303.readgroup.bam SORT_ORDER=coordinate CREATE_INDEX=True \
+      RGID=W303 RGLB=SRR527545 RGPL=Illumina RGPU=Genomic RGSM=W303 \
+      VALIDATION_STRINGENCY=SILENT
+
+---
+#Then identify Intervals around variants
+
+    $ java -Xmx3g -jar GATK/GenomeAnalysisTK.jar -T RealignerTargetCreator \
+     -R genome/Saccharomyces.fa \
+     -o W303.intervals -I W303.readgroup.bam
 
 Then realign based on these intervals
 
-    $ java -Xmx3gb -jar GATK/GenomeAnalysisTK.jar -T IndelRealigner \
-     -R genome/Saccharomyces_cerevisiae.fa \
-     -targetIntervalsSTRAIN.intervals -I STRAIN.dedup.bam -o STRAIN.realign.bam
+    $ java -Xmx3g -jar GATK/GenomeAnalysisTK.jar -T IndelRealigner \
+     -R genome/Saccharomyces.fa \
+     -targetIntervals W303.intervals -I W303.readgroup.bam -o W303.realign.bam
 
 ---
 #SAMtools and VCFtools to call SNPs
 
-    $ samtools mpileup -D -S -gu -f genome/Saccharomyces_cerevisiae.fa ABC.bam | \
+    $ samtools mpileup -D -S -gu -f genome/Saccharomyces.fa ABC.bam | \
      bcftools view -bvcg - > ABC.raw.bcf
     $ bcftools view ABC.raw.bcf | vcfutils.pl varFilter -D100 > ABC.filter.vcf
 
@@ -488,18 +525,18 @@ Then realign based on these intervals
 
     # run GATK with 4 threads (-nt)
     # call SNPs only (-glm, would specific INDEL for Indels or can ask for BOTH)
-    $ java -Xmx3gb -jar GenomeAnalysisTKLite.jar -T UnifiedGenotyper \
-      -glm SNP -I SRR527545.bam -R genome/Saccharomyces_cerevisiae.fa \
-      -o SRR527545.GATK.vcf -nt 4
+    $ java -Xmx3g -jar GenomeAnalysisTK.jar -T UnifiedGenotyper \
+      -glm SNP -I W303.realign.bam -R genome/Saccharomyces.fa \
+      -o W303.GATK.vcf -nt 4
 
 ---
 #GATK to call INDELs
 
     # run GATK with 4 threads (-nt)
     # call SNPs only (-glm, would specific INDEL for Indels or can ask for BOTH)
-    $ java -jar GenomeAnalysisTKLite.jar -T UnifiedGenotyper\
-      -glm INDEL -I SRR527545.bam \
-      -R genome/Saccharomyces_cerevisiae.fa -o SRR527545.GATK_INDEL.vcf -nt 4
+    $ java -jar GenomeAnalysisTK.jar -T UnifiedGenotyper\
+      -glm INDEL -I W303.realign.bam \
+      -R genome/Saccharomyces.fa -o W303.GATK_INDEL.vcf -nt 4
    
 ---
 #VCF Files
@@ -514,7 +551,7 @@ Then realign based on these intervals
     ##INFO=<ID=AC,Number=A,Type=Integer,Description="Allele count in genotypes, for each ALT allele, in the same order as listed">
     ##INFO=<ID=AF,Number=A,Type=Float,Description="Allele Frequency, for each ALT allele, in the same order as listed">
 
-    #CHROM	POS	ID	REF	ALT	QUAL	FILTER	INFO	FORMAT	SRR527545
+    #CHROM	POS	ID	REF	ALT	QUAL	FILTER	INFO	FORMAT	W303
     chrI	141	.	C	T	47.01	.	AC=1;AF=0.500;AN=2;BaseQRankSum=-0.203;DP=23;Dels=0.00;
     FS=5.679;HaplotypeScore=3.4127;MLEAC=1;MLEAF=0.500;MQ=53.10;MQ0=0;MQRankSum=-2.474;QD=2.04;ReadPosRankSum=-0.771;
     SB=-2.201e+01	GT:AD:DP:GQ:PL	0/1:19,4:23:77:77,0,565
@@ -533,7 +570,7 @@ Homopolymer run length (HRun), Quality Score of variant, strand bias
 (too many reads from only one strand), etc.
 
     -T VariantFiltration -o STRAINS.filtered.vcf
-    --variant STRAINS.raw.vcf \
+    --variant W303.raw.vcf \
     --clusterWindowSize 10  -filter "QD<8.0" -filterName QualByDepth \
     -filter "MQ>=30.0" -filterName MapQual \
     -filter "HRun>=4" -filterName HomopolymerRun \
@@ -551,7 +588,7 @@ A useful tool to JUST get SNPs back out from a VCF file is vcf-to-tab (part of v
    
     $ vcf-to-tab < INPUT.vcf > OUTPUT.tab
 
-    #CHROM	POS	REF	SRR527545
+    #CHROM	POS	REF	W303
     chrI	141	C	C/T
     chrI	286	A	A/T
     chrI	305	C	C/G
@@ -569,7 +606,7 @@ A useful tool to JUST get SNPs back out from a VCF file is vcf-to-tab (part of v
 ---
 #VCFtools to evaluate and manipulate
 
-    $ vcftools --vcf SRR527545.GATK.vcf --diff SRR527545.filter.vcf
+    $ vcftools --vcf W303.GATK.vcf --diff W303.filter.vcf
     N_combined_individuals:	1
     N_individuals_common_to_both_files:	1
     N_individuals_unique_to_file1:	0
@@ -608,14 +645,4 @@ PCA plot of strains from the SNPs converted to 0,1,2 for homozygous Ref, Homozyg
 * Genotyping with SAMtools and GATK
 * Summarizing and manipulating VCF files with VCFtools
 
-
----
-#Fixing Read-Groups
-
-I am using W303 since it is the strain name for this sequencing record.
-
-    $ java -Xmx3gb -jar $PICARD/AddOrReplaceReadGroups.jar INPUT=SRR527545.bam \
-      OUTPUT=SRR527545.readgroup.bam SORT_ORDER=coordinate CREATE_INDEX=True \
-      RGID=W303 RGLB=SRR527545 RGPL=Illumina RGPU=Genomic RGSM=W303 \
-      VALIDATION_STRINGENCY=SILENT
 
