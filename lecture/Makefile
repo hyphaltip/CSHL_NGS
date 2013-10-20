@@ -12,7 +12,7 @@ all: $(patsubst %.slides.md,%.slides.html,$(wildcard *.slides.md)) $(patsubst %.
 	$(LANDSLIDE) $(FLAGS) $< -d $@
 
 %.pdf: %.md
-	$(LANDSLIDE) -t ../themes/luckywhite $< -d $@
+	$(LANDSLIDE) $< -d $@
 
 clean:
 	rm -f *.html
