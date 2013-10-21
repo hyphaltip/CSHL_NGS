@@ -18,4 +18,12 @@
 	# index the genome for bwa
 	bwa index genome/Saccharomyces.fa
 	# run bwa
-	bwa mem 
+	bwa mem genome/Saccharomyces.fa W303_chrII_1.trim.fastq \
+	W303_chrII_2.trim.fastq  > W303_chrII.sam
+	# run picard to convert to bam and sort
+	java -jar $PICARD/SortSam.jar I=W303.sam O=W303.sorted.bam CREATE_INDEX=true SO=coordinate
+	# run de-duplicate
+	java -jar $PICARD/MarkDuplicates.jar INPUT=W303.sorted.bam  \
+	OUTPUT=W303.dedup.bam METRICS_FILE=W303.dedup.metrics    \
+	CREATE_INDEX=true VALIDATION_STRINGENCY=SILENT
+
