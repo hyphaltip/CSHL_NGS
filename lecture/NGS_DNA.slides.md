@@ -394,13 +394,13 @@ alignment algorithm. All in one step now to create the sam file.
 
 Can also convert and sort all in one go with Picard
 
-    $ java -Xmx2g -jar SortSam.jar IN=W303.sam OUT=W303.sorted.bam \
+    $ java -Xmx2g -jar SortSam.jar INPUT=W303.sam OUT=W303.sorted.bam \
      SORT_ORDER=coordinate VALIDATION_STRINGENCY=SILENT CREATE_INDEX=true
 
 Or if you already created a bam file, but need to sort it, the input
 can also be a nam file
 
-    $ java -Xmx2g -jar SortSam.jar IN=W303.unsrt.bam OUT=W303.sorted.bam \
+    $ java -Xmx2g -jar SortSam.jar INPUT=W303.unsrt.bam OUT=W303.sorted.bam \
      SORT_ORDER=coordinate VALIDATION_STRINGENCY=SILENT CREATE_INDEX=true
 
 Lots of other resources for SAM/BAM manipulation in Picard documentation on the web [http://picard.sourceforge.net/command-line-overview.shtml](http://picard.sourceforge.net/command-line-overview.shtml).

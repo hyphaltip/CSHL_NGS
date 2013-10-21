@@ -2591,12 +2591,12 @@ W303_2.fastq |  samtools view -bS &gt; W303.unsrt.bam
             
             
             <section><p>Can also convert and sort all in one go with Picard</p>
-<pre><code>$ java -Xmx2g -jar SortSam.jar IN=W303.sam OUT=W303.sorted.bam \
+<pre><code>$ java -Xmx2g -jar SortSam.jar INPUT=W303.sam OUT=W303.sorted.bam \
  SORT_ORDER=coordinate VALIDATION_STRINGENCY=SILENT CREATE_INDEX=true
 </code></pre>
 <p>Or if you already created a bam file, but need to sort it, the input
 can also be a nam file</p>
-<pre><code>$ java -Xmx2g -jar SortSam.jar IN=W303.unsrt.bam OUT=W303.sorted.bam \
+<pre><code>$ java -Xmx2g -jar SortSam.jar INPUT=W303.unsrt.bam OUT=W303.sorted.bam \
  SORT_ORDER=coordinate VALIDATION_STRINGENCY=SILENT CREATE_INDEX=true
 </code></pre>
 <p>Lots of other resources for SAM/BAM manipulation in Picard documentation on the web <a href="http://picard.sourceforge.net/command-line-overview.shtml">http://picard.sourceforge.net/command-line-overview.shtml</a>.</p></section>
