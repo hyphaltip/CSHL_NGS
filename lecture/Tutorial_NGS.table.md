@@ -1,6 +1,9 @@
 Data and scripts for this Tutorial and Lectures are available at [https://github.com/hyphaltip/CSHL_NGS](https://github.com/hyphaltip/CSHL_NGS).
 
-See the answers at [Tutorial answers](/CSHL_NGS/lecture/Tutorial_steps.table.html).
+See the answers at
+[Tutorial answers](/CSHL_NGS/lecture/Tutorial_steps.table.html) and
+the raw version of this file is in
+[Tutorial_steps.table.md](/CSHL_NGS/lecture/Tutorial_steps.table.md) 
 
 Preparation Steps
 =================
@@ -44,7 +47,7 @@ Tutorial
    [lecture notes](http://hyphaltip.github.com/CSHL_NGS/lecture/NGS_DNA.slides.html#slide34). (bwa index)
 
 4. Realign reads with Picard and GATK
-   [based on lecture](http://hyphaltip.github.com/CSHL_NGS/lecture/NGS_DNA.slides.html#slide41). (picard
+   [based on lecture](http://hyphaltip.github.com/CSHL_NGS/lecture/NGS_DNA.slides.html#slide41). (picard)
 
 5. Fix the Read groups see
    [this slide](http://hyphaltip.github.com/CSHL_NGS/lecture/NGS_DNA.slides.html#slide41) (picard)
