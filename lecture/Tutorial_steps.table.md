@@ -25,7 +25,7 @@
 	# make index from picard
 	java -jar $PICARD/CreateSequenceDictionary.jar \
 	R=genome/Saccharomyces.fa OUTPUT=genome/Saccharomyces.fa.dict	
-    # run de-duplicate
+	# run de-duplicate
 	java -jar $PICARD/MarkDuplicates.jar INPUT=W303.sorted.bam  \
 	OUTPUT=W303.dedup.bam METRICS_FILE=W303.dedup.metrics    \
 	CREATE_INDEX=true VALIDATION_STRINGENCY=SILENT
