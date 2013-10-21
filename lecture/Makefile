@@ -5,7 +5,7 @@ all: $(patsubst %.slides.md,%.slides.html,$(wildcard *.slides.md)) $(patsubst %.
 
 %.table.html: %.table.md
 	$(MARKDOWN) $< --output $@
-
+#	$(LANDSLIDE) $< -d $@
 
 %.slides.html: %.slides.md
 	$(LANDSLIDE) $(FLAGS) $< -d $@

@@ -57,20 +57,21 @@ java -jar <span class="dt">$PICARD</span>/SortSam.jar I=W303.sam O=W303.sorted.b
 java -jar <span class="dt">$PICARD</span>/MarkDuplicates.jar INPUT=W303.sorted.bam  \
 OUTPUT=W303.dedup.bam METRICS_FILE=W303.dedup.metrics    \
 CREATE_INDEX=true VALIDATION_STRINGENCY=SILENT
-java <span class="kw">-X</span>mx3g -jar <span class="dt">$GATK</span> <span class="kw">-T</span> RealignerTargetCreator \
+<span class="co"># Identify where to run the realignment based on finding variant sites</span>
+java <span class="kw">-X</span>mx3g -jar <span class="dt">$GATK</span>/GenomeAnalysisTK.jar <span class="kw">-T</span> RealignerTargetCreator \
  <span class="kw">-R</span> genome/Saccharomyces.fa \
  <span class="kw">-o</span> W303.intervals -I W303.dedup.bam
 <span class="co"># run realignment</span>
-java <span class="kw">-X</span>mx3g -jar <span class="dt">$GATK</span> <span class="kw">-T</span> IndelRealigner \
+java <span class="kw">-X</span>mx3g -jar <span class="dt">$GATK</span>/GenomeAnalysisTK.jar <span class="kw">-T</span> IndelRealigner \
     <span class="kw">-R</span> genome/Saccharomyces.fa \
     <span class="kw">-t</span>argetIntervals W303.intervals -I W303.readgroup.bam \
     <span class="kw">-o</span> W303.realign.bam
 <span class="co"># run the genotyper</span>
-java <span class="kw">-X</span>mx3g -jar <span class="dt">$GATK</span> <span class="kw">-T</span> UnifiedGenotyper \
+java <span class="kw">-X</span>mx3g -jar <span class="dt">$GATK</span>/GenomeAnalysisTK.jar <span class="kw">-T</span> UnifiedGenotyper \
   <span class="kw">-g</span>lm SNP -I W303.realign.bam <span class="kw">-R</span> genome/Saccharomyces.fa \
   <span class="kw">-o</span> W303.GATK.vcf -nt <span class="dv">4</span>
 <span class="co"># filter the VCF</span>
-java <span class="kw">-X</span>mx3g -jar <span class="dt">$GATK</span> \
+java <span class="kw">-X</span>mx3g -jar <span class="dt">$GATK</span>/GenomeAnalysisTK.jar \
 <span class="kw">-T</span> VariantFiltration <span class="kw">-o</span> W303.filtered.vcf \
 --variant W303.GATK.vcf \
 -<span class="kw">-c</span>lusterWindowSize <span class="dv">10</span>  <span class="kw">-f</span>ilter <span class="kw">&quot;</span><span class="st">QD&lt;8.0</span><span class="kw">&quot;</span> <span class="kw">-f</span>ilterName QualByDepth \
