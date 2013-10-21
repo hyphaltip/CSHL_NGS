@@ -24,7 +24,9 @@
 	java -jar $PICARD/SortSam.jar I=W303_chrII.sam O=W303.sorted.bam CREATE_INDEX=true SO=coordinate
 	# make index from picard
 	java -jar $PICARD/CreateSequenceDictionary.jar \
-	R=genome/Saccharomyces.fa OUTPUT=genome/Saccharomyces.fa.dict	
+	R=genome/Saccharomyces.fa OUTPUT=genome/Saccharomyces.dict
+	# also make index from samtools
+	samtools faidx genome/Saccharomyces.fa
 	# run de-duplicate
 	java -jar $PICARD/MarkDuplicates.jar INPUT=W303.sorted.bam  \
 	OUTPUT=W303.dedup.bam METRICS_FILE=W303.dedup.metrics    \

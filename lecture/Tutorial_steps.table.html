@@ -55,7 +55,9 @@ W303_chrII_2.trim.fastq  &gt; W303_chrII.sam
 java -jar <span class="dt">$PICARD</span>/SortSam.jar I=W303_chrII.sam O=W303.sorted.bam CREATE_INDEX=true SO=coordinate
 <span class="co"># make index from picard</span>
 java -jar <span class="dt">$PICARD</span>/CreateSequenceDictionary.jar \
-R=genome/Saccharomyces.fa OUTPUT=genome/Saccharomyces.fa.dict   
+R=genome/Saccharomyces.fa OUTPUT=genome/Saccharomyces.dict
+<span class="co"># also make index from samtools</span>
+samtools faidx genome/Saccharomyces.fa
 <span class="co"># run de-duplicate</span>
 java -jar <span class="dt">$PICARD</span>/MarkDuplicates.jar INPUT=W303.sorted.bam  \
 OUTPUT=W303.dedup.bam METRICS_FILE=W303.dedup.metrics    \
