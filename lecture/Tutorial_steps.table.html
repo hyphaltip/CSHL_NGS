@@ -62,9 +62,9 @@ java <span class="kw">-X</span>mx3g -jar <span class="dt">$GATK</span> <span cla
  <span class="kw">-o</span> W303.intervals -I W303.dedup.bam
 <span class="co"># run realignment</span>
 java <span class="kw">-X</span>mx3g -jar <span class="dt">$GATK</span> <span class="kw">-T</span> IndelRealigner \
- <span class="kw">-R</span> genome/Saccharomyces.fa \
- <span class="kw">-t</span>argetIntervals W303.intervals -I W303.readgroup.bam \
- <span class="kw">-o</span> W303.realign.bam
+    <span class="kw">-R</span> genome/Saccharomyces.fa \
+    <span class="kw">-t</span>argetIntervals W303.intervals -I W303.readgroup.bam \
+    <span class="kw">-o</span> W303.realign.bam
 <span class="co"># run the genotyper</span>
 java <span class="kw">-X</span>mx3g -jar <span class="dt">$GATK</span> <span class="kw">-T</span> UnifiedGenotyper \
   <span class="kw">-g</span>lm SNP -I W303.realign.bam <span class="kw">-R</span> genome/Saccharomyces.fa \

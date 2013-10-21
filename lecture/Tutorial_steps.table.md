@@ -26,20 +26,21 @@
 	java -jar $PICARD/MarkDuplicates.jar INPUT=W303.sorted.bam  \
 	OUTPUT=W303.dedup.bam METRICS_FILE=W303.dedup.metrics    \
 	CREATE_INDEX=true VALIDATION_STRINGENCY=SILENT
-	java -Xmx3g -jar $GATK -T RealignerTargetCreator \
+	# Identify where to run the realignment based on finding variant sites
+	java -Xmx3g -jar $GATK/GenomeAnalysisTK.jar -T RealignerTargetCreator \
      -R genome/Saccharomyces.fa \
      -o W303.intervals -I W303.dedup.bam
 	# run realignment
-	java -Xmx3g -jar $GATK -T IndelRealigner \
-     -R genome/Saccharomyces.fa \
-     -targetIntervals W303.intervals -I W303.readgroup.bam \
-	 -o W303.realign.bam
+	java -Xmx3g -jar $GATK/GenomeAnalysisTK.jar -T IndelRealigner \
+		-R genome/Saccharomyces.fa \
+		-targetIntervals W303.intervals -I W303.readgroup.bam \
+		-o W303.realign.bam
 	# run the genotyper
-	java -Xmx3g -jar $GATK -T UnifiedGenotyper \
+	java -Xmx3g -jar $GATK/GenomeAnalysisTK.jar -T UnifiedGenotyper \
       -glm SNP -I W303.realign.bam -R genome/Saccharomyces.fa \
       -o W303.GATK.vcf -nt 4
 	# filter the VCF
-	java -Xmx3g -jar $GATK \
+	java -Xmx3g -jar $GATK/GenomeAnalysisTK.jar \
     -T VariantFiltration -o W303.filtered.vcf \
     --variant W303.GATK.vcf \
     --clusterWindowSize 10  -filter "QD<8.0" -filterName QualByDepth \
