@@ -52,7 +52,7 @@ cp <span class="kw">-r</span> fastqc_output ~<span class="kw">/</span><span clas
 bwa mem genome/Saccharomyces.fa W303_chrII_1.trim.fastq \
 W303_chrII_2.trim.fastq  &gt; W303_chrII.sam
 <span class="co"># run picard to convert to bam and sort</span>
-java -jar <span class="dt">$PICARD</span>/SortSam.jar I=W303.sam O=W303.sorted.bam CREATE_INDEX=true SO=coordinate
+java -jar <span class="dt">$PICARD</span>/SortSam.jar I=W303_chrII.sam O=W303.sorted.bam CREATE_INDEX=true SO=coordinate
 <span class="co"># run de-duplicate</span>
 java -jar <span class="dt">$PICARD</span>/MarkDuplicates.jar INPUT=W303.sorted.bam  \
 OUTPUT=W303.dedup.bam METRICS_FILE=W303.dedup.metrics    \
