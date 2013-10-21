@@ -30,15 +30,25 @@ code > span.er { color: #ff0000; font-weight: bold; }
   </style>
 </head>
 <body>
-<pre class="sourceCode perl"><code class="sourceCode perl">!bash
-$ git clone git:/<span class="kw">/</span><span class="ot">github.com</span><span class="kw">/</span>hyphaltip/CSHL_NGS.git
-$ cd CSHL_NGS
-$ cd example
-$ bunzip2 <span class="dt">*.</span>bz2
-$ gunzip genome/<span class="dt">*.</span>gz
-$ sickle pe <span class="kw">-f</span> W303_chrII_1.fastq <span class="kw">-r</span> W303_chrII_2.fastq <span class="kw">-o</span>
-W303_chrII_1.trim.fastq <span class="kw">-p</span> W303_chrII_2.trim.fastq <span class="kw">-s</span>
-W303_chrII_single.trim.fastq
-$ </code></pre>
+<pre class="sourceCode perl"><code class="sourceCode perl"><span class="co"># checkout the project</span>
+git clone git:/<span class="kw">/</span><span class="ot">github.com</span><span class="kw">/</span>hyphaltip/CSHL_NGS.git
+cd CSHL_NGS
+<span class="co"># uncompress the datafiles</span>
+cd example
+bunzip2 <span class="dt">*.</span>bz2
+gunzip genome/<span class="dt">*.</span>gz
+<span class="co"># trim the data</span>
+sickle pe <span class="kw">-f</span> W303_chrII_1.fastq <span class="kw">-r</span> W303_chrII_2.fastq \
+<span class="kw">-o</span> W303_chrII_1.trim.fastq <span class="kw">-p</span> W303_chrII_2.trim.fastq \
+<span class="kw">-s</span> W303_chrII_single.trim.fastq
+<span class="co"># run fastqc</span>
+<span class="fu">mkdir</span> fastqc_output 
+fastqc <span class="kw">-o</span> fastqc_output <span class="dt">*.</span>fastq
+<span class="co"># copy to your public_html</span>
+cp <span class="kw">-r</span> fastqc_output ~<span class="kw">/</span><span class="ot">public_html</span>
+<span class="co"># index the genome for bwa</span>
+<span class="ot">bwa index genome</span><span class="kw">/</span>Saccharomyces.fa
+<span class="co"># run bwa</span>
+bwa mem </code></pre>
 </body>
 </html>

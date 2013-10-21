@@ -1,5 +1,6 @@
 Data and scripts for this Tutorial and Lectures are available at [https://github.com/hyphaltip/CSHL_NGS](https://github.com/hyphaltip/CSHL_NGS).
 
+See the answers at [Tutorial answers](/Tutorial_steps.table.html)
 
 
 Preparation Steps
