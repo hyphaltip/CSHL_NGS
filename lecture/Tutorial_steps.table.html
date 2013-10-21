@@ -60,10 +60,16 @@ R=genome/Saccharomyces.fa OUTPUT=genome/Saccharomyces.fa.dict
 java -jar <span class="dt">$PICARD</span>/MarkDuplicates.jar INPUT=W303.sorted.bam  \
 OUTPUT=W303.dedup.bam METRICS_FILE=W303.dedup.metrics    \
 CREATE_INDEX=true VALIDATION_STRINGENCY=SILENT
+<span class="co"># add the readgroup</span>
+java <span class="kw">-X</span>mx3g -jar <span class="dt">$PICARD</span>/AddOrReplaceReadGroups.jar INPUT=W303.dedup.bam \
+  OUTPUT=W303.readgroup.bam SORT_ORDER=coordinate CREATE_INDEX=True \
+  RGID=W303 RGLB=SRR527545 RGPL=Illumina RGPU=Genomic RGSM=W303 \
+  VALIDATION_STRINGENCY=SILENT
+
 <span class="co"># Identify where to run the realignment based on finding variant sites</span>
 java <span class="kw">-X</span>mx3g -jar <span class="dt">$GATK</span>/GenomeAnalysisTK.jar <span class="kw">-T</span> RealignerTargetCreator \
  <span class="kw">-R</span> genome/Saccharomyces.fa \
- <span class="kw">-o</span> W303.intervals -I W303.dedup.bam
+ <span class="kw">-o</span> W303.intervals -I W303.readgroup.bam
 <span class="co"># run realignment</span>
 java <span class="kw">-X</span>mx3g -jar <span class="dt">$GATK</span>/GenomeAnalysisTK.jar <span class="kw">-T</span> IndelRealigner \
     <span class="kw">-R</span> genome/Saccharomyces.fa \
