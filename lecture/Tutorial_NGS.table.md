@@ -19,9 +19,16 @@ Using Git on the command line (or install Git for Mac)
    drug resistance properties and mixed ancestry from the reference
    strain S288C. A project sequenced the genome and  analyzed it to
    show amino acid alterations in ~800
-   genes. [Ralser et al 2012)(http://www.ncbi.nlm.nih.gov/pubmed/22977733). We will attempt to replicate
+   genes. [Ralser et al 2012](http://www.ncbi.nlm.nih.gov/pubmed/22977733). We will attempt to replicate
    some aspects of this analysis (though note they did an assembly of the read not simply mapping
    them to the refeence).
+
+2. These data are available in the data/example/W303_chrII_1.fastq.bz2
+   and W303_chrII_2.fastq.bz2 - you will need to uncompress with
+   bunzip2
+
+3. The genome is available in data/genome/Saccharomyces.fa.gz - you
+   need to uncompress this with gunzip data/genome/Saccharomyces.fa.gz
    
 Tutorial
 ========
@@ -32,17 +39,23 @@ Tutorial
 
 ```fastqc -h``` to get help
 
-3. Align reads to the genome using BWA. This requires you to also build and index for the genome. See the [lecture notes](http://hyphaltip.github.com/CSHL_NGS/lecture/NGS_DNA.slides.html#slide34).
+3. Align reads to the genome using BWA. This requires you to also
+   build and index for the genome. See the
+   [lecture notes](http://hyphaltip.github.com/CSHL_NGS/lecture/NGS_DNA.slides.html#slide34). (bwa index)
 
-3. Fix the Read groups see [this slide](http://hyphaltip.github.com/CSHL_NGS/lecture/NGS_DNA.slides.html#slide51)
+4. Realign reads with Picard and GATK
+   [based on lecture](http://hyphaltip.github.com/CSHL_NGS/lecture/NGS_DNA.slides.html#slide41). (picard
 
-4. Realign reads with Picard and GATK [based on lecture](http://hyphaltip.github.com/CSHL_NGS/lecture/NGS_DNA.slides.html#slide40).
+5. Fix the Read groups see
+   [this slide](http://hyphaltip.github.com/CSHL_NGS/lecture/NGS_DNA.slides.html#slide41) (picard)
 
-1. Call SNPs with SAMTools - refer to the SAMtools manpage on mpileup for more details. [http://samtools.sourceforge.net/](http://samtools.sourceforge.net/)
+1. Call SNPs with SAMTools - refer to the SAMtools manpage on mpileup
+   for more
+   details. [http://samtools.sourceforge.net/](http://samtools.sourceforge.net/) [this slide](http://hyphaltip.github.com/CSHL_NGS/lecture/NGS_DNA.slides.html#slide43)
 
-1. Call SNPs with GATK, using [example from the lecture](http://hyphaltip.github.com/CSHL_NGS/lecture/NGS_DNA.slides.html#slide42)
+1. Call SNPs with GATK, using [example from the lecture](http://hyphaltip.github.com/CSHL_NGS/lecture/NGS_DNA.slides.html#slide44)
 
-1. Run Filtering steps on GATK output SNPs to remove potential biased or low-quality ones using options [provided in lecture](http://hyphaltip.github.com/CSHL_NGS/lecture/NGS_DNA.slides.html#slide45).
+1. Run Filtering steps on GATK output SNPs to remove potential biased or low-quality ones using options [provided in lecture](http://hyphaltip.github.com/CSHL_NGS/lecture/NGS_DNA.slides.html#slide47).
 
 1. Calculate the total number of remaining SNPs. Count the lines or use [vcftools](http://vcftools.sourceforge.net/).
 

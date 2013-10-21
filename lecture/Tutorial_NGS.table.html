@@ -39,7 +39,9 @@ code > span.er { color: #ff0000; font-weight: bold; }
 <pre class="sourceCode perl"><code class="sourceCode perl">$ git clone git:/<span class="kw">/</span><span class="ot">github.com</span><span class="kw">/</span>hyphaltip/CSHL_NGS.git</code></pre>
 <ol type="1">
 <li><p>The data you need are available from here. There are directions at the bottom if you want to see how the data are obtained but not necessary for this tutorial.</p></li>
-<li><p>We will use some data from a strain of yeast, W303 which has some drug resistance properties and mixed ancestry from the reference strain S288C. A project sequenced the genome and analyzed it to show amino acid alterations in ~800 genes. [Ralser et al 2012)(http://www.ncbi.nlm.nih.gov/pubmed/22977733). We will attempt to replicate some aspects of this analysis (though note they did an assembly of the read not simply mapping them to the refeence).</p></li>
+<li><p>We will use some data from a strain of yeast, W303 which has some drug resistance properties and mixed ancestry from the reference strain S288C. A project sequenced the genome and analyzed it to show amino acid alterations in ~800 genes. <a href="http://www.ncbi.nlm.nih.gov/pubmed/22977733">Ralser et al 2012</a>. We will attempt to replicate some aspects of this analysis (though note they did an assembly of the read not simply mapping them to the refeence).</p></li>
+<li><p>These data are available in the data/example/W303_chrII_1.fastq.bz2 and W303_chrII_2.fastq.bz2 - you will need to uncompress with bunzip2</p></li>
+<li><p>The genome is available in data/genome/Saccharomyces.fa.gz - you need to uncompress this with gunzip data/genome/Saccharomyces.fa.gz</p></li>
 </ol>
 <h1 id="tutorial">Tutorial</h1>
 <ol type="1">
@@ -48,12 +50,12 @@ code > span.er { color: #ff0000; font-weight: bold; }
 </ol>
 <p><code>fastqc -h</code> to get help</p>
 <ol start="3" type="1">
-<li><p>Align reads to the genome using BWA. This requires you to also build and index for the genome. See the <a href="http://hyphaltip.github.com/CSHL_NGS/lecture/NGS_DNA.slides.html#slide34">lecture notes</a>.</p></li>
-<li><p>Fix the Read groups see <a href="http://hyphaltip.github.com/CSHL_NGS/lecture/NGS_DNA.slides.html#slide51">this slide</a></p></li>
-<li><p>Realign reads with Picard and GATK <a href="http://hyphaltip.github.com/CSHL_NGS/lecture/NGS_DNA.slides.html#slide40">based on lecture</a>.</p></li>
-<li><p>Call SNPs with SAMTools - refer to the SAMtools manpage on mpileup for more details. <a href="http://samtools.sourceforge.net/">http://samtools.sourceforge.net/</a></p></li>
-<li><p>Call SNPs with GATK, using <a href="http://hyphaltip.github.com/CSHL_NGS/lecture/NGS_DNA.slides.html#slide42">example from the lecture</a></p></li>
-<li><p>Run Filtering steps on GATK output SNPs to remove potential biased or low-quality ones using options <a href="http://hyphaltip.github.com/CSHL_NGS/lecture/NGS_DNA.slides.html#slide45">provided in lecture</a>.</p></li>
+<li><p>Align reads to the genome using BWA. This requires you to also build and index for the genome. See the <a href="http://hyphaltip.github.com/CSHL_NGS/lecture/NGS_DNA.slides.html#slide34">lecture notes</a>. (bwa index)</p></li>
+<li><p>Realign reads with Picard and GATK <a href="http://hyphaltip.github.com/CSHL_NGS/lecture/NGS_DNA.slides.html#slide41">based on lecture</a>. (picard</p></li>
+<li><p>Fix the Read groups see <a href="http://hyphaltip.github.com/CSHL_NGS/lecture/NGS_DNA.slides.html#slide41">this slide</a> (picard)</p></li>
+<li><p>Call SNPs with SAMTools - refer to the SAMtools manpage on mpileup for more details. <a href="http://samtools.sourceforge.net/">http://samtools.sourceforge.net/</a> <a href="http://hyphaltip.github.com/CSHL_NGS/lecture/NGS_DNA.slides.html#slide43">this slide</a></p></li>
+<li><p>Call SNPs with GATK, using <a href="http://hyphaltip.github.com/CSHL_NGS/lecture/NGS_DNA.slides.html#slide44">example from the lecture</a></p></li>
+<li><p>Run Filtering steps on GATK output SNPs to remove potential biased or low-quality ones using options <a href="http://hyphaltip.github.com/CSHL_NGS/lecture/NGS_DNA.slides.html#slide47">provided in lecture</a>.</p></li>
 <li><p>Calculate the total number of remaining SNPs. Count the lines or use <a href="http://vcftools.sourceforge.net/">vcftools</a>.</p></li>
 <li><p>For advanced users, intersect this list of SNPs (in the VCF file) with the GFF for the genome to determine which SNPs are in coding regions. Read up on <a href="http://code.google.com/p/bedtools/">BEDTools</a>. The genome annotation in GFF is available in the folder where the genome was downloaded from <a href="http://yeastgenome.org">SGD</a>.</p></li>
 <li><p>Open the genome file for Saccharomces in IGV. <a href="http://www.broadinstitute.org/igv/">http://www.broadinstitute.org/igv/</a> is here.</p></li>
