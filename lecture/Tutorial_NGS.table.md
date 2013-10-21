@@ -25,7 +25,7 @@ Using Git on the command line (or install Git for Mac)
 
 2. These data are available in the data/example/W303_chrII_1.fastq.bz2
    and W303_chrII_2.fastq.bz2 - you will need to uncompress with
-   bunzip2
+   bunzip2.
 
 3. The genome is available in data/genome/Saccharomyces.fa.gz - you
    need to uncompress this with gunzip data/genome/Saccharomyces.fa.gz
