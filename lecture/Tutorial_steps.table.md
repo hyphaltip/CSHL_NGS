@@ -22,7 +22,10 @@
 	W303_chrII_2.trim.fastq  > W303_chrII.sam
 	# run picard to convert to bam and sort
 	java -jar $PICARD/SortSam.jar I=W303_chrII.sam O=W303.sorted.bam CREATE_INDEX=true SO=coordinate
-	# run de-duplicate
+	# make index from picard
+	java -jar $PICARD/CreateSequenceDictionary.jar \
+	R=genome/Saccharomyces.fa OUTPUT=genome/Saccharomyces.fa.dict	
+    # run de-duplicate
 	java -jar $PICARD/MarkDuplicates.jar INPUT=W303.sorted.bam  \
 	OUTPUT=W303.dedup.bam METRICS_FILE=W303.dedup.metrics    \
 	CREATE_INDEX=true VALIDATION_STRINGENCY=SILENT
