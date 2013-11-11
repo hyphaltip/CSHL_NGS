@@ -48,19 +48,16 @@
 		-o W303.realign.bam
 	# run the genotyper
 	java -Xmx3g -jar $GATK/GenomeAnalysisTK.jar -T UnifiedGenotyper \
-      -glm SNP -I W303.realign.bam -R genome/Saccharomyces.fa \
+       -glm SNP -I W303.realign.bam -R genome/Saccharomyces.fa \
       -o W303.GATK.vcf -nt 4
 	# filter the VCF
 	java -Xmx3g -jar $GATK/GenomeAnalysisTK.jar \
     -T VariantFiltration -o W303.filtered.vcf \
-    --variant W303.GATK.vcf \
+    --variant W303.GATK.vcf -R genome/Saccharomyces.fa \
     --clusterWindowSize 10  -filter "QD<8.0" -filterName QualByDepth \
-    -filter "MQ>=30.0" -filterName MapQual \
-    -filter "HRun>=4" -filterName HomopolymerRun \
+    -filter "MQ<=30.0" -filterName MapQual \
     -filter "QUAL<100" -filterName QScore \
     -filter "MQ0>=10 && ((MQ0 / (1.0 * DP)) > 0.1)" -filterName MapQualRatio \
     -filter "FS>60.0" -filterName FisherStrandBias \
-    -filter "HaplotypeScore > 13.0" -filterName HaplotypeScore \
-    -filter "MQRankSum < -12.5" -filterName MQRankSum  \
-    -filter "ReadPosRankSum < -8.0" -filterName ReadPosRankSum  >& output.filter.log
+    -filter "HaplotypeScore > 13.0" -filterName HaplotypeScore >& output.filter.log
 

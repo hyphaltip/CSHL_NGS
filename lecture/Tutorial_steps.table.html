@@ -79,20 +79,17 @@ java <span class="kw">-X</span>mx3g -jar <span class="dt">$GATK</span>/GenomeAna
     <span class="kw">-o</span> W303.realign.bam
 <span class="co"># run the genotyper</span>
 java <span class="kw">-X</span>mx3g -jar <span class="dt">$GATK</span>/GenomeAnalysisTK.jar <span class="kw">-T</span> UnifiedGenotyper \
-  <span class="kw">-g</span>lm SNP -I W303.realign.bam <span class="kw">-R</span> genome/Saccharomyces.fa \
+   <span class="kw">-g</span>lm SNP -I W303.realign.bam <span class="kw">-R</span> genome/Saccharomyces.fa \
   <span class="kw">-o</span> W303.GATK.vcf -nt <span class="dv">4</span>
 <span class="co"># filter the VCF</span>
 java <span class="kw">-X</span>mx3g -jar <span class="dt">$GATK</span>/GenomeAnalysisTK.jar \
 <span class="kw">-T</span> VariantFiltration <span class="kw">-o</span> W303.filtered.vcf \
---variant W303.GATK.vcf \
+--variant W303.GATK.vcf <span class="kw">-R</span> genome/Saccharomyces.fa \
 -<span class="kw">-c</span>lusterWindowSize <span class="dv">10</span>  <span class="kw">-f</span>ilter <span class="kw">&quot;</span><span class="st">QD&lt;8.0</span><span class="kw">&quot;</span> <span class="kw">-f</span>ilterName QualByDepth \
-<span class="kw">-f</span>ilter <span class="kw">&quot;</span><span class="st">MQ&gt;=30.0</span><span class="kw">&quot;</span> <span class="kw">-f</span>ilterName MapQual \
-<span class="kw">-f</span>ilter <span class="kw">&quot;</span><span class="st">HRun&gt;=4</span><span class="kw">&quot;</span> <span class="kw">-f</span>ilterName HomopolymerRun \
+<span class="kw">-f</span>ilter <span class="kw">&quot;</span><span class="st">MQ&lt;=30.0</span><span class="kw">&quot;</span> <span class="kw">-f</span>ilterName MapQual \
 <span class="kw">-f</span>ilter <span class="kw">&quot;</span><span class="st">QUAL&lt;100</span><span class="kw">&quot;</span> <span class="kw">-f</span>ilterName QScore \
 <span class="kw">-f</span>ilter <span class="kw">&quot;</span><span class="st">MQ0&gt;=10 &amp;&amp; ((MQ0 / (1.0 * DP)) &gt; 0.1)</span><span class="kw">&quot;</span> <span class="kw">-f</span>ilterName MapQualRatio \
 <span class="kw">-f</span>ilter <span class="kw">&quot;</span><span class="st">FS&gt;60.0</span><span class="kw">&quot;</span> <span class="kw">-f</span>ilterName FisherStrandBias \
-<span class="kw">-f</span>ilter <span class="kw">&quot;</span><span class="st">HaplotypeScore &gt; 13.0</span><span class="kw">&quot;</span> <span class="kw">-f</span>ilterName HaplotypeScore \
-<span class="kw">-f</span>ilter <span class="kw">&quot;</span><span class="st">MQRankSum &lt; -12.5</span><span class="kw">&quot;</span> <span class="kw">-f</span>ilterName MQRankSum  \
-<span class="kw">-f</span>ilter <span class="kw">&quot;</span><span class="st">ReadPosRankSum &lt; -8.0</span><span class="kw">&quot;</span> <span class="kw">-f</span>ilterName ReadPosRankSum  &gt;&amp; output.filter.<span class="fu">log</span></code></pre>
+<span class="kw">-f</span>ilter <span class="kw">&quot;</span><span class="st">HaplotypeScore &gt; 13.0</span><span class="kw">&quot;</span> <span class="kw">-f</span>ilterName HaplotypeScore &gt;&amp; output.filter.<span class="fu">log</span></code></pre>
 </body>
 </html>
