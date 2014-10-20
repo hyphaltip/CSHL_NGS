@@ -21,7 +21,7 @@ java -Xmx3g -jar $GATK \
 # stats if you have BCFTOOLS 1.1 installed
 
 bgzip W303.GATK_raw.vcf
-bgzip W303.GATK_filtred.vcf
+bgzip W303.GATK_filtered.vcf
 tabix -p vcf W303.GATK_raw.vcf.gz
 tabix -p vcf W303.GATK_filtered.vcf.gz
 
