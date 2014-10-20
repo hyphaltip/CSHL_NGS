@@ -625,18 +625,6 @@ A useful tool to JUST get SNPs back out from a VCF file is vcf-to-tab (part of v
     $ vcftools --vcf Sacch_strains.vcf --TajimaD 1000 
 
 ---
-#Can compare strains in other ways
-
-PCA plot of strains from the SNPs converted to 0,1,2 for homozygous Ref, Homozygous Alt allele, or heterozygous (done in R)
-
-![PCA_1](images/PCA_1.png)
-
----
-#Zoomed PCA plot
-
-![PCA_2](images/PCA_2.png)
-
----
 #Summary
 
 * Reads should be trimmed, quality controlled before use. Preserving Paired-End info is important
@@ -644,5 +632,4 @@ PCA plot of strains from the SNPs converted to 0,1,2 for homozygous Ref, Homozyg
 * SAMTools and Picard to manipulate SAM/BAM files
 * Genotyping with SAMtools and GATK
 * Summarizing and manipulating VCF files with VCFtools
-
 
