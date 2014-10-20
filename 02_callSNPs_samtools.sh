@@ -1,4 +1,6 @@
-QUERY_BAM=W303.bam
+cd data
+
+QUERY_BAM=W303.sorted.bam
 # HERE WE AER USING SAMTOOLS 1.1
 SAMTOOLS=/usr/local/samtools-1.1/samtools
 BCFTOOLS=/usr/local/bcftools-1.1/bcftools
@@ -6,11 +8,11 @@ BCFTOOLS=/usr/local/bcftools-1.1/bcftools
 # IF YOU WANT TO RUN WITH SAMTOOLS 0.1.19 (older version)
 #SAMTOOLS=/usr/local/bin/samtools
 #BCFTOOLS=/usr/local/bin/bcftools
-]
+
 # IF YOU RUN THE REALIGNER (step 03) change this to the following
 # QUERY_BAM=W303.realign.bam
 
-GENOME=data/genome/Saccharomyces.fa
+GENOME=genome/Saccharomyces.fa
 # also make index from samtools
 $SAMTOOLS faidx $GENOME
 
@@ -22,6 +24,11 @@ tabix -p vcf W303.samtools_raw.vcf.gz
 $BCFTOOLS stats -F $GENOME -s - W303.samtools_raw.vcf.gz > W303.samtools_raw.vcf.stats
 
 $BCFTOOLS filter -O z -o W303.samtools_filtered.vcf.gz -s LOWQUAL -i'%QUAL>10' W303.samtools_raw.vcf.gz
+
+tabix -p vcf W303.samtools_filtered.vcf.gz
+
+$BCFTOOLS stats -F $GENOME -s - W303.samtools_filtered.vcf.gz > W303.samtools_filtered.vcf.stats
+
 #END SAMTOOLS 1.1
 
 #IF YOU AER USING SAMTOOLS 0.1.19

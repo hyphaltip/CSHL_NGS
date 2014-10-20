@@ -1,11 +1,12 @@
-# checkout the project
-# uncompress the datafiles
-bunzip2 -k data/seq/*.bz2
-gunzip -k data/genome/*.fa.gz
+#/bin/bash
 
 cd data
-# trim the data
 
+# uncompress the datafiles
+bunzip2 -k seq/*.bz2
+gunzip -k genome/*.fa.gz
+
+# trim the data
 sickle pe -f seq/W303_chrII_1.fastq -r seq/W303_chrII_2.fastq \
 -o W303_chrII_1.trim.fastq -p W303_chrII_2.trim.fastq \
 -s W303_chrII_single.trim.fastq -t sanger
