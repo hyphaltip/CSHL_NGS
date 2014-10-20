@@ -1,2 +1,17 @@
 *~
 .DS_Store
+*.bam
+*.sam
+*.tbi
+*.bai
+*.fai
+*.idx
+*.dict
+*.metrics
+*.intervals
+*.vcf
+*.fastq
+*.stats
+*.vcf.gz
+*.fa.*
+Saccharomyces.fa
