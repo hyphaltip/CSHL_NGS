@@ -18,13 +18,19 @@ java -Xmx3g -jar $GATK \
     -filter "FS>60.0" -filterName FisherStrandBias \
     -filter "HaplotypeScore > 13.0" -filterName HaplotypeScore >& output.filter.log 
 
+java -Xmx3g -jar $GATK -T SelectVariants -R $GENOME  --variant W303.GATK_filtered.vcf \
+ -o W303.GATK_selected.vcf --excludeFiltered
 # stats if you have BCFTOOLS 1.1 installed
 
 bgzip W303.GATK_raw.vcf
 bgzip W303.GATK_filtered.vcf
+bgzip W303.GATK_selected.vcf
+
 tabix -p vcf W303.GATK_raw.vcf.gz
 tabix -p vcf W303.GATK_filtered.vcf.gz
+tabix -p vcf W303.GATK_selected.vcf.gz
 
 BCFTOOLS=/usr/local/bcftools-1.1/bcftools
 $BCFTOOLS stats -F $GENOME -s - W303.GATK_raw.vcf.gz > W303.GATK_raw.vcf.stats
 $BCFTOOLS stats -F $GENOME -s - W303.GATK_filtered.vcf.gz > W303.GATK_filtered.vcf.stats
+$BCFTOOLS stats -F $GENOME -s - W303.GATK_selected.vcf.gz > W303.GATK_selected.vcf.stats
